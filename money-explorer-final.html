@@ -1,0 +1,1395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Money Explorer | Final Dashboard</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0b1120;
+  --card: #172238;
+  --surface: #22304a;
+  --text: #f3f6ff;
+  --muted: #b3c0d6;
+  --border: #35455e;
+  --primary: #8b7cf6;
+  --green: #37d9b4;
+  --red: #ff8294;
+  --shadow: 0 12px 30px rgba(0,0,0,.15);
+}
+
+body.light {
+  color-scheme: light;
+  --bg: #f3f6fc;
+  --card: #ffffff;
+  --surface: #eaf0fa;
+  --text: #17233b;
+  --muted: #52617a;
+  --border: #d3ddec;
+  --primary: #6252d2;
+  --green: #087e65;
+  --red: #bd3855;
+  --shadow: 0 10px 25px rgba(20,35,70,.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, Arial, sans-serif;
+  transition: background .25s, color .25s;
+}
+
+header {
+  padding: 32px 5%;
+  color: white;
+  background: linear-gradient(120deg,#30236d,#10536d);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(26px,4vw,38px);
+}
+
+header p {
+  margin: 5px 0;
+  color: #e2e8fa;
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 25px 16px;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 18px;
+}
+
+.card, .stat {
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 23px;
+  box-shadow: var(--shadow);
+  transition: transform .2s, border-color .2s;
+}
+
+.card:hover, .stat:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.stat strong {
+  display: block;
+  font-size: clamp(21px,3vw,31px);
+  overflow-wrap: anywhere;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.green {
+  color: var(--green);
+}
+
+.red {
+  color: var(--red);
+}
+
+label {
+  display: block;
+  margin: 12px 0 6px;
+  font-weight: 600;
+}
+
+input, select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+input:focus, select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button {
+  min-height: 43px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform .2s, filter .2s;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.secondary {
+  background: #425574;
+}
+
+.danger {
+  background: #ac3c57;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.progress {
+  height: 16px;
+  background: var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 14px 0;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg,#8b7cf6,#37d9b4);
+  transition: width .4s ease;
+}
+
+.progress-bar.over {
+  background: var(--red);
+}
+
+.warning {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 115px minmax(0,1fr) 95px;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.chart-track {
+  height: 21px;
+  background: var(--surface);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.chart-bar {
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg,#7465ed,#37d9b4);
+  transition: width .5s ease;
+}
+
+.chart-value {
+  font-size: 13px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.expense {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.expense-info {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.expense small {
+  color: var(--muted);
+}
+
+.expense-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.empty {
+  text-align: center;
+  padding: 25px;
+  background: var(--surface);
+  border-radius: 12px;
+  color: var(--muted);
+}
+
+.error {
+  color: var(--red);
+  font-size: 14px;
+  margin: 7px 0;
+  min-height: 20px;
+}
+
+.toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 10;
+  padding: 14px 20px;
+  border-radius: 11px;
+  background: #126b5d;
+  color: white;
+  box-shadow: 0 10px 30px #0005;
+  max-width: 360px;
+}
+
+.toast[hidden], [hidden] {
+  display: none !important;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  .stats, .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .card, .stat {
+    padding: 18px;
+  }
+
+  .expense {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chart-row {
+    grid-template-columns: 90px minmax(0,1fr) 75px;
+    gap: 7px;
+    font-size: 13px;
+  }
+
+  .toast {
+    left: 12px;
+    right: 12px;
+    max-width: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .chart-row {
+    grid-template-columns: 85px minmax(0,1fr);
+  }
+
+  .chart-value {
+    grid-column: 2;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <h1>💰 Money Explorer</h1>
+      <p>Track your expenses. Plan your budget. Save smarter.</p>
+    </div>
+
+    <button id="themeButton" type="button">
+      ☀️ Light Mode
+    </button>
+  </div>
+</header>
+
+<main>
+
+<section class="stats" aria-label="Financial summary">
+  <div class="stat">
+    <p>💵 Monthly Income</p>
+    <strong id="incomeStat">₹0</strong>
+  </div>
+
+  <div class="stat">
+    <p>🛒 Total Expenses</p>
+    <strong id="expenseStat" class="red">₹0</strong>
+  </div>
+
+  <div class="stat">
+    <p>💎 Remaining Balance</p>
+    <strong id="balanceStat" class="green">₹0</strong>
+  </div>
+</section>
+
+<div class="grid">
+
+<section class="card">
+  <h2>💵 Monthly Income</h2>
+
+  <label for="incomeInput">Income (₹)</label>
+  <input id="incomeInput" type="number"
+    min="0" step="0.01" placeholder="10000">
+
+  <p id="incomeError" class="error" role="alert"></p>
+
+  <button id="saveIncome" type="button">
+    Save Income
+  </button>
+</section>
+
+<section class="card" id="expenseFormCard">
+  <h2 id="expenseFormTitle">🛍️ Add Expense</h2>
+
+  <form id="expenseForm" novalidate>
+    <label for="expenseName">Expense Name</label>
+    <input id="expenseName" type="text"
+      maxlength="60" placeholder="Example: Lunch">
+
+    <label for="expenseAmount">Amount (₹)</label>
+    <input id="expenseAmount" type="number"
+      min="0.01" step="0.01" placeholder="150">
+
+    <label for="expenseCategory">Category</label>
+    <select id="expenseCategory">
+      <option>Food</option>
+      <option>Travel</option>
+      <option>Shopping</option>
+      <option>Education</option>
+      <option>Entertainment</option>
+      <option>Other</option>
+    </select>
+
+    <p id="expenseError" class="error" role="alert"></p>
+
+    <div class="actions">
+      <button id="saveExpense" type="submit">
+        Add Expense
+      </button>
+
+      <button id="cancelEdit" type="button"
+        class="secondary" hidden>
+        Cancel Edit
+      </button>
+    </div>
+  </form>
+</section>
+
+<section class="card">
+  <h2>🎯 Savings Goal</h2>
+  <p class="muted">
+    Estimate how much of your target your remaining
+    budget could cover.
+  </p>
+
+  <label for="goalInput">Savings Target (₹)</label>
+  <input id="goalInput" type="number"
+    min="1" step="0.01" placeholder="5000">
+
+  <p id="goalError" class="error" role="alert"></p>
+
+  <button id="saveGoal" type="button">
+    Set Goal
+  </button>
+
+  <p id="goalText">No savings goal set.</p>
+
+  <div id="goalProgress" class="progress"
+    role="progressbar"
+    aria-label="Savings goal progress"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuenow="0">
+    <div id="goalBar" class="progress-bar"></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>🚦 Monthly Budget Limit</h2>
+
+  <p class="muted">
+    Set a spending limit and receive overspending warnings.
+  </p>
+
+  <label for="budgetInput">Budget Limit (₹)</label>
+  <input id="budgetInput" type="number"
+    min="1" step="0.01" placeholder="8000">
+
+  <p id="budgetError" class="error" role="alert"></p>
+
+  <button id="saveBudget" type="button">
+    Set Budget
+  </button>
+
+  <p id="budgetText">No budget limit set.</p>
+
+  <div id="budgetProgress" class="progress"
+    role="progressbar"
+    aria-label="Budget usage"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuenow="0">
+    <div id="budgetBar" class="progress-bar"></div>
+  </div>
+
+  <p id="budgetWarning" class="warning" role="status"></p>
+</section>
+
+<section class="card full">
+  <h2>📊 Spending by Category</h2>
+  <div id="chart"></div>
+</section>
+
+<section class="card full">
+  <h2>📋 Expense History</h2>
+
+  <div class="filters">
+    <div>
+      <label for="searchInput">🔎 Search Expenses</label>
+      <input id="searchInput" type="search"
+        placeholder="Search expense names">
+    </div>
+
+    <div>
+      <label for="categoryFilter">Category</label>
+      <select id="categoryFilter">
+        <option value="All">All Categories</option>
+        <option>Food</option>
+        <option>Travel</option>
+        <option>Shopping</option>
+        <option>Education</option>
+        <option>Entertainment</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="sortSelect">Sort Expenses</label>
+      <select id="sortSelect">
+        <option value="newest">Newest First</option>
+        <option value="highest">Highest Amount</option>
+        <option value="lowest">Lowest Amount</option>
+      </select>
+    </div>
+  </div>
+
+  <p id="expenseCount" class="muted"></p>
+  <div id="expenseList"></div>
+
+  <div class="actions">
+    <button id="undoDelete" type="button"
+      class="secondary" disabled>
+      ↩ Undo Delete
+    </button>
+
+    <button id="exportCSV" type="button">
+      ⬇ Export CSV
+    </button>
+
+    <button id="clearExpenses" type="button"
+      class="danger">
+      Clear All Expenses
+    </button>
+  </div>
+</section>
+
+<section class="card full">
+  <h2>⚙️ Dashboard Controls</h2>
+
+  <p class="muted">
+    Your information is saved in this browser.
+    Resetting removes all stored financial information.
+  </p>
+
+  <button id="resetButton" type="button"
+    class="danger">
+    Reset All Data
+  </button>
+</section>
+
+</div>
+</main>
+
+<div id="toast" class="toast"
+  role="status" aria-live="polite" hidden></div>
+
+<footer>
+  Money Explorer • Final Internship Project
+</footer>
+
+<script>
+"use strict";
+
+const KEY = "money_explorer_student_v1";
+const $ = id => document.getElementById(id);
+
+const categories = [
+  "Food", "Travel", "Shopping",
+  "Education", "Entertainment", "Other"
+];
+
+const icons = {
+  Food: "🍔",
+  Travel: "🚗",
+  Shopping: "🛍️",
+  Education: "📚",
+  Entertainment: "🎬",
+  Other: "📦"
+};
+
+const MAX_AMOUNT = 1000000000000;
+
+function defaults() {
+  return {
+    income: 0,
+    expenses: [],
+    goal: 0,
+    budget: 0,
+    theme: "dark"
+  };
+}
+
+let data = defaults();
+let editingId = null;
+let deletedExpense = null;
+let toastTimer;
+
+function newId() {
+  if (window.crypto && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+
+  return Date.now().toString(36) +
+    Math.random().toString(36).slice(2);
+}
+
+function roundMoney(value) {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+}
+
+function parseAmount(raw, allowZero = false) {
+  const text = String(raw).trim();
+
+  if (text === "") return null;
+
+  const value = Number(text);
+
+  if (!Number.isFinite(value)) return null;
+  if (value > MAX_AMOUNT) return null;
+  if (allowZero ? value < 0 : value <= 0) return null;
+
+  const cents = Math.round(value * 100);
+
+  if (Math.abs(value * 100 - cents) > 0.00001) {
+    return null;
+  }
+
+  return cents / 100;
+}
+
+function validSavedAmount(value, allowZero = false) {
+  return typeof value === "number" &&
+    parseAmount(String(value), allowZero) !== null;
+}
+
+function money(value) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(value);
+}
+
+function notify(message) {
+  $("toast").textContent = message;
+  $("toast").hidden = false;
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    $("toast").hidden = true;
+  }, 3500);
+}
+
+function showError(id, message) {
+  $(id).textContent = message;
+}
+
+function save() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(data));
+    return true;
+  } catch (error) {
+    notify("Browser storage unavailable. Changes may not persist.");
+    return false;
+  }
+}
+
+function load() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY));
+
+    if (!saved || typeof saved !== "object") return;
+
+    if (validSavedAmount(saved.income, true)) {
+      data.income = saved.income;
+    }
+
+    if (validSavedAmount(saved.goal, true)) {
+      data.goal = saved.goal;
+    }
+
+    if (validSavedAmount(saved.budget, true)) {
+      data.budget = saved.budget;
+    }
+
+    if (saved.theme === "light") {
+      data.theme = "light";
+    }
+
+    if (Array.isArray(saved.expenses)) {
+      const ids = new Set();
+
+      data.expenses = saved.expenses
+        .filter(e =>
+          e &&
+          typeof e.name === "string" &&
+          e.name.trim().length > 0 &&
+          validSavedAmount(e.amount) &&
+          categories.includes(e.category)
+        )
+        .map(e => {
+          let id = typeof e.id === "string" &&
+            e.id.trim() ? e.id : newId();
+
+          if (ids.has(id)) id = newId();
+          ids.add(id);
+
+          return {
+            id,
+            name: e.name.trim().slice(0, 60),
+            amount: e.amount,
+            category: e.category
+          };
+        });
+    }
+  } catch (error) {
+    console.warn("Could not load saved data.", error);
+  }
+}
+
+function totalExpenses() {
+  const cents = data.expenses.reduce(
+    (sum, e) => sum + Math.round(e.amount * 100), 0
+  );
+
+  return cents / 100;
+}
+
+function balance() {
+  return roundMoney(data.income - totalExpenses());
+}
+
+function updateStats() {
+  $("incomeStat").textContent = money(data.income);
+  $("expenseStat").textContent = money(totalExpenses());
+  $("balanceStat").textContent = money(balance());
+
+  $("balanceStat").className =
+    balance() < 0 ? "red" : "green";
+}
+
+function setProgress(progressId, barId, percentage) {
+  const safe = Math.max(
+    0, Math.min(100, percentage)
+  );
+
+  $(barId).style.width = safe + "%";
+
+  $(progressId).setAttribute(
+    "aria-valuenow", Math.round(safe)
+  );
+}
+
+function updateGoal() {
+  if (data.goal <= 0) {
+    $("goalText").textContent = "No savings goal set.";
+    setProgress("goalProgress", "goalBar", 0);
+    return;
+  }
+
+  const available = Math.max(0, balance());
+  const percentage = available / data.goal * 100;
+
+  $("goalText").textContent =
+    money(available) + " available toward " +
+    money(data.goal) + " goal (" +
+    Math.round(Math.min(100, percentage)) + "%)";
+
+  setProgress("goalProgress", "goalBar", percentage);
+}
+
+function updateBudget() {
+  const spent = totalExpenses();
+
+  $("budgetWarning").textContent = "";
+  $("budgetBar").classList.remove("over");
+
+  if (data.budget <= 0) {
+    $("budgetText").textContent = "No budget limit set.";
+    setProgress("budgetProgress", "budgetBar", 0);
+    return;
+  }
+
+  const percentage = spent / data.budget * 100;
+
+  $("budgetText").textContent =
+    money(spent) + " spent of " +
+    money(data.budget) + " (" +
+    Math.round(percentage) + "%)";
+
+  setProgress("budgetProgress", "budgetBar", percentage);
+
+  const difference = roundMoney(spent - data.budget);
+
+  if (difference > 0) {
+    $("budgetWarning").textContent =
+      "⚠️ Budget exceeded by " +
+      money(difference) + "!";
+    $("budgetBar").classList.add("over");
+  } else if (difference === 0) {
+    $("budgetWarning").textContent =
+      "⚠️ You have reached your budget limit.";
+  } else if (percentage >= 80) {
+    $("budgetWarning").textContent =
+      "⚠️ You have used at least 80% of your budget.";
+  }
+}
+
+function renderChart() {
+  const container = $("chart");
+  container.replaceChildren();
+
+  const totals = {};
+
+  categories.forEach(c => totals[c] = 0);
+
+  data.expenses.forEach(e => {
+    totals[e.category] = roundMoney(
+      totals[e.category] + e.amount
+    );
+  });
+
+  const max = Math.max(...Object.values(totals));
+
+  if (max === 0) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent =
+      "📊 No spending data yet. Add an expense to see your chart.";
+    container.append(p);
+    return;
+  }
+
+  categories.forEach(category => {
+    const amount = totals[category];
+
+    const row = document.createElement("div");
+    row.className = "chart-row";
+
+    const label = document.createElement("span");
+    label.textContent = icons[category] + " " + category;
+
+    const track = document.createElement("div");
+    track.className = "chart-track";
+
+    const bar = document.createElement("div");
+    bar.className = "chart-bar";
+    bar.style.width = (amount / max * 100) + "%";
+
+    const value = document.createElement("span");
+    value.className = "chart-value";
+    value.textContent = money(amount);
+
+    track.append(bar);
+    row.append(label, track, value);
+    container.append(row);
+  });
+}
+
+function filteredExpenses() {
+  const search = $("searchInput").value
+    .trim().toLowerCase();
+
+  const category = $("categoryFilter").value;
+  const sort = $("sortSelect").value;
+
+  const items = data.expenses
+    .map((e, index) => ({...e, index}))
+    .filter(e =>
+      e.name.toLowerCase().includes(search) &&
+      (category === "All" || e.category === category)
+    );
+
+  if (sort === "highest") {
+    items.sort((a, b) =>
+      b.amount - a.amount || b.index - a.index
+    );
+  } else if (sort === "lowest") {
+    items.sort((a, b) =>
+      a.amount - b.amount || b.index - a.index
+    );
+  } else {
+    items.sort((a, b) => b.index - a.index);
+  }
+
+  return items;
+}
+
+function renderExpenses() {
+  const container = $("expenseList");
+  container.replaceChildren();
+
+  const items = filteredExpenses();
+
+  $("expenseCount").textContent =
+    "Showing " + items.length +
+    " of " + data.expenses.length + " expenses";
+
+  $("undoDelete").disabled = !deletedExpense;
+
+  if (items.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+
+    empty.textContent = data.expenses.length === 0
+      ? "📝 No expenses yet. Add your first expense above."
+      : "🔎 No matching expenses. Try another search or filter.";
+
+    container.append(empty);
+    return;
+  }
+
+  items.forEach(e => {
+    const row = document.createElement("div");
+    row.className = "expense";
+
+    const info = document.createElement("div");
+    info.className = "expense-info";
+
+    const name = document.createElement("strong");
+    name.textContent = icons[e.category] + " " + e.name;
+
+    const details = document.createElement("div");
+    const small = document.createElement("small");
+
+    small.textContent =
+      e.category + " • " + money(e.amount);
+
+    details.append(small);
+    info.append(name, details);
+
+    const buttons = document.createElement("div");
+    buttons.className = "expense-buttons";
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "secondary";
+    edit.textContent = "✏️ Edit";
+    edit.setAttribute("aria-label", "Edit " + e.name);
+
+    edit.addEventListener("click", () => {
+      startEdit(e.id);
+    });
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "danger";
+    remove.textContent = "Delete";
+    remove.setAttribute(
+      "aria-label", "Delete " + e.name
+    );
+
+    remove.addEventListener("click", () => {
+      deleteExpense(e.id);
+    });
+
+    buttons.append(edit, remove);
+    row.append(info, buttons);
+    container.append(row);
+  });
+}
+
+function render() {
+  updateStats();
+  updateGoal();
+  updateBudget();
+  renderChart();
+  renderExpenses();
+}
+
+function cancelEdit() {
+  editingId = null;
+
+  $("expenseFormTitle").textContent =
+    "🛍️ Add Expense";
+
+  $("saveExpense").textContent = "Add Expense";
+  $("cancelEdit").hidden = true;
+
+  $("expenseName").value = "";
+  $("expenseAmount").value = "";
+  $("expenseCategory").value = "Food";
+
+  showError("expenseError", "");
+}
+
+function startEdit(id) {
+  const expense = data.expenses.find(e => e.id === id);
+
+  if (!expense) {
+    notify("Expense could not be found.");
+    return;
+  }
+
+  editingId = id;
+
+  $("expenseName").value = expense.name;
+  $("expenseAmount").value = expense.amount;
+  $("expenseCategory").value = expense.category;
+
+  $("expenseFormTitle").textContent =
+    "✏️ Edit Expense";
+
+  $("saveExpense").textContent = "Save Changes";
+  $("cancelEdit").hidden = false;
+
+  showError("expenseError", "");
+
+  $("expenseFormCard").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+  $("expenseName").focus({
+    preventScroll: true
+  });
+}
+
+function deleteExpense(id) {
+  const index = data.expenses.findIndex(
+    e => e.id === id
+  );
+
+  if (index === -1) return;
+
+  const expense = data.expenses.splice(index, 1)[0];
+
+  deletedExpense = {expense, index};
+
+  if (editingId === id) {
+    cancelEdit();
+  }
+
+  save();
+  render();
+
+  notify("Expense deleted. Click Undo Delete to restore.");
+}
+
+$("saveIncome").addEventListener("click", () => {
+  const value = parseAmount(
+    $("incomeInput").value, true
+  );
+
+  if (value === null) {
+    showError(
+      "incomeError",
+      "Enter a valid non-negative income (maximum 2 decimals)."
+    );
+    return;
+  }
+
+  showError("incomeError", "");
+
+  data.income = value;
+  save();
+  render();
+
+  notify("Income saved successfully!");
+});
+
+$("expenseForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const name = $("expenseName").value.trim();
+
+  const amount = parseAmount(
+    $("expenseAmount").value
+  );
+
+  const category = $("expenseCategory").value;
+
+  if (!name) {
+    showError("expenseError", "Enter an expense name.");
+    $("expenseName").focus();
+    return;
+  }
+
+  if (amount === null) {
+    showError(
+      "expenseError",
+      "Enter a positive amount with at most 2 decimals."
+    );
+    $("expenseAmount").focus();
+    return;
+  }
+
+  if (!categories.includes(category)) {
+    showError("expenseError", "Select a valid category.");
+    return;
+  }
+
+  if (editingId !== null) {
+    const expense = data.expenses.find(
+      e => e.id === editingId
+    );
+
+    if (!expense) {
+      cancelEdit();
+      notify("Expense no longer exists.");
+      return;
+    }
+
+    expense.name = name;
+    expense.amount = amount;
+    expense.category = category;
+
+    notify("Expense updated successfully!");
+  } else {
+    data.expenses.push({
+      id: newId(),
+      name,
+      amount,
+      category
+    });
+
+    notify("Expense added successfully!");
+  }
+
+  cancelEdit();
+  save();
+  render();
+});
+
+$("cancelEdit").addEventListener("click", () => {
+  cancelEdit();
+  notify("Editing cancelled.");
+});
+
+$("saveGoal").addEventListener("click", () => {
+  const value = parseAmount(
+    $("goalInput").value
+  );
+
+  if (value === null) {
+    showError(
+      "goalError",
+      "Enter a valid positive savings goal."
+    );
+    return;
+  }
+
+  showError("goalError", "");
+
+  data.goal = value;
+  save();
+  render();
+
+  notify("Savings goal updated!");
+});
+
+$("saveBudget").addEventListener("click", () => {
+  const value = parseAmount(
+    $("budgetInput").value
+  );
+
+  if (value === null) {
+    showError(
+      "budgetError",
+      "Enter a valid positive budget limit."
+    );
+    return;
+  }
+
+  showError("budgetError", "");
+
+  data.budget = value;
+  save();
+  render();
+
+  notify("Budget limit updated!");
+});
+
+$("searchInput").addEventListener(
+  "input", renderExpenses
+);
+
+$("categoryFilter").addEventListener(
+  "change", renderExpenses
+);
+
+$("sortSelect").addEventListener(
+  "change", renderExpenses
+);
+
+$("undoDelete").addEventListener("click", () => {
+  if (!deletedExpense) return;
+
+  const {expense, index} = deletedExpense;
+
+  data.expenses.splice(
+    Math.min(index, data.expenses.length),
+    0,
+    expense
+  );
+
+  deletedExpense = null;
+
+  save();
+  render();
+
+  notify("Deleted expense restored!");
+});
+
+$("clearExpenses").addEventListener("click", () => {
+  if (data.expenses.length === 0) {
+    notify("There are no expenses to clear.");
+    return;
+  }
+
+  if (!confirm(
+    "Delete all expenses? This action cannot be undone."
+  )) {
+    return;
+  }
+
+  data.expenses = [];
+  deletedExpense = null;
+
+  cancelEdit();
+  save();
+  render();
+
+  notify("All expenses cleared.");
+});
+
+function csvCell(value) {
+  let text = String(value);
+
+  // Protect spreadsheet programs from interpreting
+  // user-entered text as a formula.
+  if (/^[\s]*[=+\-@\t\r]/.test(text)) {
+    text = "'" + text;
+  }
+
+  return '"' + text.replace(/"/g, '""') + '"';
+}
+
+$("exportCSV").addEventListener("click", () => {
+  if (data.expenses.length === 0) {
+    notify("Add an expense before exporting.");
+    return;
+  }
+
+  const rows = [
+    ["Expense Name", "Amount (INR)", "Category"],
+    ...data.expenses.map(e => [
+      e.name,
+      e.amount.toFixed(2),
+      e.category
+    ])
+  ];
+
+  const csv = "\uFEFF" + rows.map(
+    row => row.map(csvCell).join(",")
+  ).join("\r\n");
+
+  const blob = new Blob([csv], {
+    type: "text/csv;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "money-explorer-expenses.csv";
+
+  document.body.append(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  notify("CSV download started!");
+});
+
+function applyTheme() {
+  document.body.classList.toggle(
+    "light",
+    data.theme === "light"
+  );
+
+  $("themeButton").textContent =
+    data.theme === "dark"
+      ? "☀️ Light Mode"
+      : "🌙 Dark Mode";
+}
+
+$("themeButton").addEventListener("click", () => {
+  data.theme = data.theme === "dark"
+    ? "light"
+    : "dark";
+
+  applyTheme();
+  save();
+});
+
+$("resetButton").addEventListener("click", () => {
+  if (!confirm(
+    "Reset all Money Explorer data? This cannot be undone."
+  )) {
+    return;
+  }
+
+  data = defaults();
+  editingId = null;
+  deletedExpense = null;
+
+  cancelEdit();
+
+  $("incomeInput").value = "";
+  $("goalInput").value = "";
+  $("budgetInput").value = "";
+  $("searchInput").value = "";
+  $("categoryFilter").value = "All";
+  $("sortSelect").value = "newest";
+
+  [
+    "incomeError",
+    "goalError",
+    "budgetError",
+    "expenseError"
+  ].forEach(id => showError(id, ""));
+
+  applyTheme();
+  save();
+  render();
+
+  notify("Dashboard reset successfully!");
+});
+
+function initialize() {
+  load();
+
+  $("incomeInput").value =
+    data.income || "";
+
+  $("goalInput").value =
+    data.goal || "";
+
+  $("budgetInput").value =
+    data.budget || "";
+
+  applyTheme();
+  render();
+}
+
+initialize();
+</script>
+
+</body>
+</html>

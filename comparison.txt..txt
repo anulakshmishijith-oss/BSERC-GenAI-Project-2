@@ -1,0 +1,374 @@
+
+PROJECT 2 – ROUND 1 COMPARISON
+
+Version 1: Original Student Revision Dashboard
+Version 2: Improved Student Revision Dashboard
+
+Comparison:
+Version 2 has a more modern design, improved buttons, smooth animations and a cleaner layout. The checklist, timer, flashcards, quiz and reset button were tested.
+
+Conclusion: Round 1 design improvements reviewed.
+# Round 2 – Functionality Improvement
+
+**Project:** Student Revision Dashboard
+
+**Version 2:** Design-improved dashboard  
+**Version 3:** Functionality-improved dashboard
+
+### Changes Made
+
+1. **Automatic Progress Saving:** Added localStorage to save study progress even after refreshing the webpage.
+2. **Daily Study Goal Tracker:** Added a feature to set daily study targets and track completed study minutes.
+3. **Improved Quiz System:** Added percentage-based scores and performance feedback.
+4. **Timer Notification:** Added a notification when the study timer finishes.
+5. **Light/Dark Mode:** Added a theme toggle to switch between light and dark modes.
+6. **Improved Functionality:** Updated the dashboard while retaining the checklist, flashcards, quiz, timer and reset button.
+
+### Testing Result
+
+To be completed after testing all features in Version 3.
+
+### Conclusion
+
+Round 2 focused on improving the functionality, usability and interactivity of the Student Revision Dashboard.
+ROUND 2 – TESTING RESULTS
+
+1. Automatic progress saving: Working
+2. Daily study goal: Working
+3. Quiz score: Working
+4. Timer notification: Working
+5. Light/Dark mode: Working
+6. Reset button: Working
+
+Tested using Google Chrome.
+## WEBSITE 2 – ROUND 1 COMPARISON
+
+**Project:** Personal Money Explorer
+
+**Initial Version:** money-explorer.html
+
+**Round 1 Version:** money-explorer-v2.html
+
+### Changes Made
+
+1. **Dashboard Design:** Added a modern gradient header and improved card layout.
+2. **Financial Summary Cards:** Improved income, expenses and balance cards with larger amounts and icons.
+3. **Hover Effects:** Added smooth hover animations to cards and buttons.
+4. **Expense Chart:** Added gradient bars, category icons and animated transitions.
+5. **Input Fields:** Improved styling, spacing and readability.
+6. **Notifications:** Added feedback messages when saving income, adding expenses and updating savings goals.
+7. **Mobile Responsiveness:** Improved layout for smaller screens.
+8. **Existing Features:** Retained income calculation, expense tracking, savings goals, category filtering, deletion, theme switching and automatic saving.
+
+### Comparison Table
+
+| Feature | Initial Version | Round 1 Version |
+|---|---|---|
+| Dashboard | Basic modern layout | Improved gradient design |
+| Financial cards | Simple summary cards | Larger values and icons |
+| Buttons | Basic styling | Hover effects |
+| Expense chart | Simple bar chart | Animated gradient bars |
+| Notifications | Browser alerts | Styled notification messages |
+| Mobile design | Responsive | Improved mobile layout |
+| Functionality | Core features | Core features retained |
+
+### Testing Results
+
+- Income calculator: working
+- Expense tracker: working
+- Savings goal: working
+- Expense chart: working
+- Category filter: working
+- Delete expense: working
+- Light/dark mode: working
+- Automatic saving: working
+- Reset button: working
+
+### Conclusion
+
+Round 1 focused on improving the visual appearance and user experience of the Personal Money Explorer while retaining its existing functionality.
+## WEBSITE 2 – ROUND 2 COMPARISON
+
+**Project:** Personal Money Explorer
+
+**Previous Version:** money-explorer-v2.html
+
+**Round 2 Version:** money-explorer-v3.html
+
+### Changes Made
+
+1. **Edit Expense:** Added an Edit button to modify existing expense names, amounts and categories.
+2. **Search Expenses:** Added a search bar to find expenses by name.
+3. **Monthly Budget Limit:** Added a budget-setting feature with progress tracking and overspending warnings.
+4. **Sort Expenses:** Added options to sort expenses by highest amount, lowest amount and newest first.
+5. **Export to CSV:** Added a button to export expense records as a CSV file.
+6. **Undo Delete:** Added a button to restore the most recently deleted expense during the current session.
+7. **Clear All Expenses:** Added a button to delete all expense records after confirmation.
+8. **Form Validation:** Improved validation to reject empty names, negative amounts, zero expenses and invalid numbers.
+9. **Existing Features:** Retained income calculation, remaining balance, savings goals, spending chart, category filtering, theme switching, automatic saving and reset.
+10. **Responsive Design:** Retained mobile-friendly layouts and improved the expense controls.
+
+### Comparison Table
+
+| Feature | Round 1 | Round 2 |
+|---|---|---|
+| Expense tracking | Add and delete | Add, edit and delete |
+| Expense search | Not available | Added |
+| Monthly budget limit | Not available | Added with warning |
+| Expense sorting | Not available | Highest, lowest and newest |
+| CSV export | Not available | Added |
+| Undo delete | Not available | Added |
+| Clear all expenses | Reset entire dashboard | Separate expense clearing |
+| Input validation | Basic | Improved |
+| Income and savings | Available | Retained |
+| Expense chart | Animated chart | Retained |
+| Theme switching | Available | Retained |
+| Data saving | localStorage | localStorage retained |
+
+### Testing Results
+
+- Edit Expense: working
+- Search Expenses: working
+- Monthly Budget Warning: working
+- Sort Expenses: working
+- Export CSV: working
+- Undo Delete: working
+- Clear All Expenses: working
+- Input Validation: working
+- Existing Features: working
+- Mobile Responsiveness: working
+
+### Conclusion
+
+Round 2 focused on improving the functionality and usability of the Personal Money Explorer website. Seven major interactive features were introduced, along with stronger form validation. The updated version provides more control over expense records while retaining the earlier dashboard features.
+
+**Limitations:** Undo Delete works only during the current page session. The monthly budget is a single stored budget setting, and expenses are not yet separated by calendar month.
+## WEBSITE 2 – ROUND 3 COMPARISON
+
+**Project:** Personal Money Explorer
+
+**Previous Version:** money-explorer-v3.html
+
+**Final Version:** money-explorer-final.html
+
+### Improvements Made
+
+1. Improved calculation accuracy for income, expenses and remaining balance.
+2. Improved expense editing and cancellation.
+3. Improved Undo Delete functionality.
+4. Added clearer budget warnings at 80%, 100% and above the budget limit.
+5. Improved CSV export handling.
+6. Added clearer error messages for invalid inputs.
+7. Improved browser storage handling.
+8. Improved keyboard accessibility and mobile responsiveness.
+9. Added helpful messages when no expenses are available.
+10. Retained all previous features and the modern dashboard design.
+
+### Testing Results
+
+Browser testing pending. Test income calculation, expense editing, deletion, search, sorting, filtering, budget warnings, CSV export, theme switching, localStorage and reset before submission.
+
+### Conclusion
+
+Round 3 focused on improving the reliability, accessibility and usability of the Personal Money Explorer. The final version includes all major features developed during the previous rounds.
+
+**Final HTML File:** money-explorer-final.html
+## WEBSITE 3 – ROUND 1 COMPARISON
+
+**Project Name:** Solar System Explorer
+
+**Previous Version:** solar-system.html
+
+**Round 1 Version:** solar-system-v2.html
+
+### Improvements Made
+
+1. **Animated Background:** Added twinkling stars to make the space environment more visually attractive.
+2. **Planet Appearance:** Improved the appearance of the Sun and planets using CSS gradients, shadows and glowing effects.
+3. **Planet Selection:** Added glowing highlights and hover effects when selecting planets.
+4. **Solar System Animation:** Improved the visual presentation of planetary orbits and animations.
+5. **Planet Information Cards:** Redesigned planet information using modern cards with icons, improved typography and spacing.
+6. **Smooth Transitions:** Added animated transitions when switching between planets.
+7. **Planet Comparison:** Added visual diameter comparison bars to help users compare planet sizes.
+8. **Quiz Design:** Added an animated progress bar, improved answer buttons and score animations.
+9. **Navigation:** Added navigation links for Explore, Compare and Quiz sections.
+10. **Responsive Design:** Improved layouts for desktop, tablet and mobile screens.
+11. **Existing Features:** Retained planet selection, orbit speed control, pause/play, restart, planet comparison, quiz and theme switching.
+
+### Comparison Table
+
+| Feature | Initial Version | Round 1 |
+|---|---|---|
+| Space background | Basic starfield | Animated twinkling stars |
+| Sun appearance | Basic glow | Enhanced glow animation |
+| Planet appearance | CSS gradients | Improved shading and highlights |
+| Planet selection | Simple outline | Glowing selection effects |
+| Information cards | Simple fact rows | Redesigned fact cards with icons |
+| Planet comparison | Text-based | Visual comparison bars |
+| Quiz progress | Text indicator | Animated progress bar |
+| Quiz scoring | Basic score display | Animated score feedback |
+| Navigation | No section navigation | Explore, Compare and Quiz links |
+| Responsive design | Basic | Improved layouts |
+
+### Testing Results
+
+- Animated stars: working
+- Planet selection and highlights: working
+- Orbit speed control: working
+- Pause and Play: working
+- Restart Orbits: working
+- Planet information cards: working
+- Planet comparison bars: working
+- Quiz progress and scoring: working
+- Theme switching: working
+- Mobile responsiveness: working
+
+### Conclusion
+
+Round 1 focused on improving the visual design and user experience of the Solar System Explorer website. The updated version introduced animated stars, enhanced planetary styling, modern information cards, visual comparison bars and improved quiz animations.
+
+The website now has a more professional and engaging appearance while retaining the interactive features from the initial version.
+
+**Next Improvement:** Round 2 – Functionality Improvements.
+## WEBSITE 3 – ROUND 2 COMPARISON
+
+**Project Name:** Solar System Explorer
+
+**Previous Version:** solar-system-v2.html
+
+**Round 2 Version:** solar-system-v3.html
+
+### Improvements Made
+
+1. **Planet Search:** Added a search bar that filters planets by their names.
+2. **Planet Filtering:** Added options to display all planets, terrestrial planets, gas giants or ice giants.
+3. **Size Comparison:** Retained the diameter comparison bars for comparing planet sizes.
+4. **Distance Comparison:** Added visual bars representing the average distance of planets from the Sun.
+5. **Expanded Quiz:** Increased the quiz from 5 to 12 multiple-choice questions.
+6. **Randomized Questions:** Added question shuffling whenever the quiz starts or restarts.
+7. **Quiz Results:** Added a results screen showing the final score, percentage, number of correct and incorrect answers, and a performance message.
+8. **Learning Progress:** Added a tracker showing how many of the eight planets have been explored.
+9. **Local Storage:** Added localStorage support to save the selected theme and learning progress.
+10. **Reset Progress:** Added a button that clears explored-planet progress after user confirmation.
+11. **Accessibility:** Added descriptive labels, accessible status messages and progress indicators.
+12. **Responsive Design:** Retained responsive layouts for mobile, tablet and desktop devices.
+
+### Comparison Table
+
+| Feature | Round 1 | Round 2 |
+|---|---|---|
+| Planet search | Not available | Added |
+| Planet filtering | Not available | Added |
+| Diameter comparison | Visual bars | Retained |
+| Distance comparison | Text values | Visual bars added |
+| Quiz questions | 5 | 12 |
+| Quiz order | Fixed | Randomized |
+| Quiz results | Basic score | Detailed results screen |
+| Learning tracker | Not available | Added |
+| Data persistence | Not available | localStorage added |
+| Reset progress | Not available | Added with confirmation |
+| Theme switching | Available | Preference saved |
+| Mobile responsiveness | Available | Retained |
+
+### Testing Results
+
+The following features require browser testing:
+
+- Planet search and filtering
+- Planet selection and information cards
+- Animation speed, pause/play and restart
+- Diameter and distance comparison
+- Randomized quiz questions and scoring
+- Quiz results and restart
+- Learning progress tracking
+- Theme persistence after refreshing
+- Reset Progress confirmation
+- Mobile and desktop responsiveness
+
+**Testing Status:** Not yet independently verified in a browser.
+
+### Conclusion
+
+Round 2 focused on adding advanced interactive features to Solar System Explorer. The updated version includes planet search and filtering, expanded comparison tools, a randomized 12-question quiz, a learning progress tracker and localStorage support.
+
+These improvements make the website more useful as an interactive educational tool while preserving the visual design and existing features from Round 1.
+
+**Next Improvement:** Round 3 – Final Testing, Bug Fixes and Optimization.
+## WEBSITE 3 – ROUND 3 COMPARISON
+
+**Project:** Solar System Explorer
+
+**Previous Version:** solar-system-v3.html
+
+**Final Version:** solar-system-final.html
+
+### Improvements Made
+
+1. **Code Optimization:** Organized the HTML, CSS and JavaScript into clearly commented sections for easier understanding and maintenance.
+
+2. **Animation Controls:** Revised the pause/play, restart and speed adjustment functions to improve animation control.
+
+3. **Planet Selection:** Improved planet selection so information cards update when users choose a planet.
+
+4. **Planet Search:** Improved search and category filtering, including a message when no planets match the search.
+
+5. **Learning Progress:** Fixed the initial selection behavior so Earth is displayed without automatically increasing the learning progress count.
+
+6. **Local Storage:** Added safer handling for saving and restoring learning progress and theme preferences.
+
+7. **Reset Progress:** Improved the reset function to clear learning progress while preserving the selected theme.
+
+8. **Planet Comparison:** Improved the visual comparison bars for planet diameters and distances from the Sun.
+
+9. **Quiz Functionality:** Added answer validation to prevent repeated answers and improved the score calculation and quiz restart logic.
+
+10. **Quiz Results:** Improved the final results display with score, percentage, correct and incorrect answer counts, and performance feedback.
+
+11. **Accessibility:** Added keyboard focus indicators, descriptive labels, progress indicators and status messages.
+
+12. **Responsive Design:** Improved the layout for mobile, tablet and desktop screens.
+
+13. **Code Documentation:** Added comments explaining important HTML, CSS and JavaScript sections.
+
+### Round 2 vs Round 3 Comparison
+
+| Feature | Round 2 | Round 3 |
+|---|---|---|
+| Solar system animation | Animated planets | Revised animation controls |
+| Planet search | Basic search | Search with result count and empty state |
+| Planet filtering | Category filtering | Retained and refined |
+| Planet information | Interactive cards | Improved selection handling |
+| Learning progress | Saved progress | Fixed default planet counting |
+| Reset progress | Reset button | Preserves theme preference |
+| Local storage | Basic persistence | Improved error handling |
+| Planet comparison | Size and distance bars | Improved selection checks |
+| Quiz | 12 randomized questions | Improved answer validation |
+| Quiz results | Score and percentage | Detailed results and feedback |
+| Accessibility | Basic support | Improved labels and focus indicators |
+| Responsive design | Mobile-friendly | Additional small-screen improvements |
+| Code structure | Functional code | Organized and commented |
+
+### Final Testing Checklist
+
+- Check whether all eight planets appear correctly.
+- Test planet selection and information updates.
+- Test the pause, play, restart and speed controls.
+- Test the planet search bar and category filters.
+- Check the no-results message.
+- Test diameter and distance comparison bars.
+- Answer all 12 quiz questions and verify scoring.
+- Restart the quiz and check the question order.
+- Refresh the page to check learning progress and theme persistence.
+- Test the Reset Learning Progress button.
+- Check keyboard navigation.
+- Check the layout on mobile and desktop screens.
+
+**Testing Status:** The code was revised, but manual browser testing has not yet been verified.
+
+### Conclusion
+
+Round 3 focused on final improvements to Solar System Explorer. The updated website includes improved animation controls, search feedback, planet comparisons, quiz validation, learning progress tracking, accessibility and responsive design.
+
+The final version preserves all major features from the previous rounds and is ready for manual browser testing before submission.
+
+**Final HTML File:** solar-system-final.html

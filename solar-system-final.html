@@ -1,0 +1,1026 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Explore the solar system with interactive planets, comparisons, learning progress and quizzes.">
+<title>Solar System Explorer - Final</title>
+<style>
+/* 1. THEME */
+:root{
+  color-scheme:dark;
+  --bg:#080d1e;--card:#151f37;--surface:#22304c;
+  --text:#f4f7ff;--muted:#b7c5de;--border:#384864;
+  --accent:#8578ef;--success:#42d5a6;
+}
+body.light{
+  color-scheme:light;
+  --bg:#edf2fc;--card:#fff;--surface:#e9eff9;
+  --text:#18243b;--muted:#53637d;--border:#ccd7e8;
+  --accent:#6050c7;--success:#08795c;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.5 system-ui,Arial,sans-serif;
+  overflow-x:hidden;
+}
+button,input,select{font:inherit}
+button{
+  min-height:43px;padding:10px 14px;border:0;
+  border-radius:10px;background:var(--accent);
+  color:#fff;font-weight:650;cursor:pointer;
+}
+button:hover:not(:disabled){filter:brightness(1.12)}
+button:disabled{opacity:.55;cursor:not-allowed}
+button:focus-visible,input:focus-visible,
+select:focus-visible,a:focus-visible{
+  outline:3px solid var(--success);outline-offset:3px;
+}
+.secondary{background:#435879}
+.danger{background:#a83e58}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+h1,h2,h3{line-height:1.25}
+h2{margin:0 0 12px;font-size:22px}
+header{
+  background:linear-gradient(120deg,#15103d,#123c68);
+  color:white;padding:28px 5%;
+}
+.header-inner{
+  max-width:1200px;margin:auto;display:flex;
+  justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:18px;
+}
+h1{font-size:clamp(27px,4vw,40px);margin:0}
+header p{margin:6px 0;color:#e0e7ff}
+nav{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+nav a{
+  color:white;text-decoration:none;border:1px solid #ffffff55;
+  border-radius:10px;padding:9px 12px;
+}
+main{max-width:1200px;margin:auto;padding:24px 16px}
+.grid{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:20px;
+}
+.card{
+  min-width:0;padding:22px;background:var(--card);
+  border:1px solid var(--border);border-radius:18px;
+}
+.full{grid-column:1/-1}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+label{display:block;margin:12px 0 6px;font-weight:650}
+input[type=search],select{
+  width:100%;min-height:44px;padding:10px 12px;
+  border:1px solid var(--border);border-radius:10px;
+  background:var(--surface);color:var(--text);
+}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.status{min-height:24px;color:var(--muted)}
+
+/* 2. ANIMATED SOLAR SYSTEM */
+.solar-viewport{
+  position:relative;width:100%;max-width:650px;
+  aspect-ratio:1;margin:16px auto;overflow:hidden;
+  isolation:isolate;border-radius:50%;
+  border:1px solid #53648b66;
+  background:radial-gradient(circle,#1b2a4c,#090f23 60%,#030612);
+  box-shadow:inset 0 0 70px #0008,0 0 35px #5262e522;
+}
+.star{
+  position:absolute;left:var(--x);top:var(--y);
+  width:var(--size);height:var(--size);
+  background:#fff;border-radius:50%;pointer-events:none;
+  animation:twinkle var(--time) ease-in-out infinite alternate;
+  animation-delay:var(--delay);
+}
+@keyframes twinkle{from{opacity:.15}to{opacity:1}}
+.sun{
+  position:absolute;left:45%;top:45%;width:10%;height:10%;
+  z-index:2;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 30% 25%,#fffbd2,
+    #ffd353 35%,#ff941a 75%,#d94c0b);
+  box-shadow:0 0 18px 6px #ffb52caa,
+             0 0 50px 17px #ff8a2444;
+}
+.orbit{
+  position:absolute;left:50%;top:50%;
+  width:var(--diameter);height:var(--diameter);
+  transform:translate(-50%,-50%);
+  border:1px solid #a8b5e32e;border-radius:50%;
+  pointer-events:none;
+}
+.spinner{
+  position:absolute;inset:0;border-radius:50%;
+  animation:revolve var(--duration) linear infinite;
+  pointer-events:none;
+}
+@keyframes revolve{to{transform:rotate(360deg)}}
+.planet{
+  position:absolute;top:0;left:50%;
+  width:var(--planet-size);height:var(--planet-size);
+  min-height:0;padding:0;border:1px solid #ffffff55;
+  border-radius:50%;transform:translate(-50%,-50%);
+  background:var(--planet-color);
+  box-shadow:inset -4px -4px 8px #0008,0 0 9px #ffffff44;
+  pointer-events:auto;cursor:pointer;
+}
+.planet:hover{filter:brightness(1.35)}
+.planet.selected{
+  outline:2px solid white;outline-offset:4px;
+  box-shadow:0 0 16px 5px #a69affaa;
+}
+.planet.saturn::after{
+  content:"";position:absolute;left:-38%;top:27%;
+  width:175%;height:45%;
+  border:3px solid #e1cba0;border-radius:50%;
+  transform:rotate(-25deg);pointer-events:none;
+}
+.solar-viewport.paused .spinner{animation-play-state:paused}
+
+/* 3. PLANET DISCOVERY */
+.planet-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;margin-top:14px;
+}
+.planet-choice{
+  padding:10px 5px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);
+  overflow-wrap:anywhere;
+}
+.planet-choice.active{
+  border-color:var(--accent);
+  box-shadow:inset 0 0 0 2px var(--accent);
+}
+.planet-choice.visited::after{
+  content:" ✓";color:var(--success);
+}
+.info-panel{margin-top:20px}
+.info-panel.animate{animation:fadeUp .3s ease}
+@keyframes fadeUp{
+  from{opacity:.4;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.facts{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.fact{
+  padding:12px;background:var(--surface);
+  border:1px solid var(--border);border-radius:12px;
+}
+.fact-label{display:block;color:var(--muted);font-size:12px}
+.fact-value{
+  display:block;margin-top:5px;font-weight:750;
+  overflow-wrap:anywhere;
+}
+.fun-fact{
+  padding:13px;background:var(--surface);
+  border-left:3px solid var(--accent);border-radius:9px;
+}
+
+/* 4. PROGRESS AND COMPARISON */
+.progress-track{
+  height:13px;overflow:hidden;border-radius:20px;
+  background:var(--surface);
+}
+.progress-fill{
+  width:0;height:100%;
+  background:linear-gradient(90deg,#8174ef,#38d7a6);
+  transition:width .35s;
+}
+.compare-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.compare-box{
+  min-width:0;padding:16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:13px;
+}
+.bar-track{
+  height:12px;margin:8px 0 15px;overflow:hidden;
+  border-radius:15px;background:var(--border);
+}
+.bar-fill{
+  height:100%;border-radius:15px;
+  background:linear-gradient(90deg,#8174ef,#38d7a6);
+}
+.metric-label{
+  font-size:13px;color:var(--muted);overflow-wrap:anywhere;
+}
+
+/* 5. QUIZ */
+.quiz-option{
+  display:block;width:100%;margin:9px 0;text-align:left;
+  background:var(--surface);color:var(--text);
+  border:1px solid var(--border);
+}
+.quiz-option.correct{background:#127b5d;color:white}
+.quiz-option.wrong{background:#ad3e59;color:white}
+.quiz-option:disabled{opacity:1}
+.score{font-size:20px;font-weight:750}
+.result-screen{
+  padding:22px;background:var(--surface);
+  border-radius:15px;text-align:center;
+}
+.result-screen strong{font-size:38px;color:var(--success)}
+footer{text-align:center;padding:25px;color:var(--muted)}
+
+/* 6. RESPONSIVE DESIGN */
+@media(max-width:850px){
+  .grid{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+  main{padding:14px 10px}
+  .card{padding:15px}
+  .planet-grid{grid-template-columns:repeat(2,1fr)}
+  .compare-grid{grid-template-columns:1fr}
+  .planet{min-width:10px;min-height:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <h1>🪐 Solar System Explorer</h1>
+      <p>Explore • Compare • Learn • Challenge Yourself</p>
+    </div>
+    <nav aria-label="Main navigation">
+      <a href="#explore">Explore</a>
+      <a href="#compare">Compare</a>
+      <a href="#quiz">Quiz</a>
+      <button id="themeButton" type="button"
+        aria-label="Switch color theme">☀️ Light</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="grid">
+
+<!-- SOLAR SYSTEM -->
+<section class="card" id="explore">
+  <h2>🌌 Interactive Solar System</h2>
+  <p class="muted">
+    Select a planet to explore its facts.
+    Orbital paths, planet sizes and animation speeds
+    are illustrative, not to scale.
+  </p>
+  <div id="solarSystem" class="solar-viewport"
+    role="group" aria-label="Interactive animated solar system">
+    <div class="sun" aria-hidden="true"></div>
+  </div>
+  <div class="actions">
+    <button id="playPause" type="button"
+      aria-pressed="false">⏸ Pause</button>
+    <button id="resetOrbits" class="secondary"
+      type="button">↺ Restart Orbits</button>
+  </div>
+  <label for="speedSlider">
+    Orbital Speed: <output id="speedLabel">1×</output>
+  </label>
+  <input id="speedSlider" type="range"
+    min="0.25" max="4" step="0.25" value="1"
+    aria-label="Orbital animation speed">
+  <p id="animationStatus" class="status" role="status"></p>
+</section>
+
+<!-- PLANET DISCOVERY -->
+<section class="card">
+  <h2>🔭 Planet Discovery</h2>
+  <label for="planetSearch">Search Planets</label>
+  <input id="planetSearch" type="search"
+    placeholder="Search Mercury, Earth, Mars..."
+    autocomplete="off">
+  <label for="planetFilter">Filter by Planet Type</label>
+  <select id="planetFilter">
+    <option value="all">All Planets</option>
+    <option value="Terrestrial">Terrestrial Planets</option>
+    <option value="Gas Giant">Gas Giants</option>
+    <option value="Ice Giant">Ice Giants</option>
+  </select>
+  <div id="planetButtons" class="planet-grid"
+    role="group" aria-label="Select a planet"></div>
+  <p id="searchMessage" class="status"
+    role="status" aria-live="polite"></p>
+  <div id="infoPanel" class="info-panel">
+    <h2 id="planetTitle">Earth</h2>
+    <p id="planetDescription"></p>
+    <div id="planetFacts" class="facts"></div>
+    <p id="planetFunFact" class="fun-fact"></p>
+  </div>
+</section>
+
+<!-- LEARNING PROGRESS -->
+<section class="card full">
+  <h2>📈 Learning Progress</h2>
+  <p id="learningText">0 of 8 planets explored</p>
+  <div id="learningProgress" class="progress-track"
+    role="progressbar" aria-label="Learning progress"
+    aria-valuemin="0" aria-valuemax="8"
+    aria-valuenow="0">
+    <div id="learningFill" class="progress-fill"></div>
+  </div>
+  <p class="muted">
+    Explore all eight planets to complete your learning journey.
+  </p>
+  <button id="resetProgress" class="danger" type="button">
+    Reset Learning Progress
+  </button>
+  <p id="progressStatus" class="status"
+    role="status" aria-live="polite"></p>
+</section>
+
+<!-- PLANET COMPARISON -->
+<section class="card full" id="compare">
+  <h2>⚖️ Advanced Planet Comparison</h2>
+  <p class="muted">
+    Compare diameters and average distances from the Sun.
+    AU means astronomical unit.
+  </p>
+  <div class="compare-grid">
+    <div>
+      <label for="compareA">First Planet</label>
+      <select id="compareA"></select>
+    </div>
+    <div>
+      <label for="compareB">Second Planet</label>
+      <select id="compareB"></select>
+    </div>
+  </div>
+  <div id="comparisonResult" class="compare-grid"
+    style="margin-top:18px"></div>
+  <p id="comparisonSummary" role="status"></p>
+</section>
+
+<!-- QUIZ -->
+<section class="card full" id="quiz">
+  <h2>🧠 Solar System Knowledge Challenge</h2>
+  <p class="muted">
+    Answer 12 multiple-choice questions in randomized order.
+  </p>
+  <div id="quizPlay">
+    <p id="quizProgressText"></p>
+    <div id="quizProgress" class="progress-track"
+      role="progressbar" aria-label="Quiz completion"
+      aria-valuemin="0" aria-valuemax="12"
+      aria-valuenow="0">
+      <div id="quizProgressFill" class="progress-fill"></div>
+    </div>
+    <h3 id="quizQuestion" style="margin-top:20px"></h3>
+    <div id="quizOptions" role="group"
+      aria-label="Answer choices"></div>
+    <p id="quizFeedback" class="status"
+      role="status" aria-live="polite"></p>
+    <p id="quizScore" class="score"></p>
+    <div class="actions">
+      <button id="nextQuestion" type="button" disabled>
+        Next Question
+      </button>
+      <button id="restartQuiz" class="secondary"
+        type="button">Restart Quiz</button>
+    </div>
+  </div>
+  <div id="quizResults" class="result-screen hidden"
+    aria-live="polite">
+    <h2>🎉 Quiz Completed!</h2>
+    <strong id="finalPercentage">0%</strong>
+    <h3 id="finalScore"></h3>
+    <p id="performanceMessage"></p>
+    <p id="correctAnswerCount"></p>
+    <button id="playAgain" type="button">Try Again</button>
+  </div>
+</section>
+
+</div>
+</main>
+<footer>
+  Solar System Explorer • Final Version • HTML, CSS & JavaScript
+</footer>
+
+<script>
+"use strict";
+
+/* 1. PLANET DATA AND QUESTION BANK */
+const $ = id => document.getElementById(id);
+
+const planets = [
+  {
+    name:"Mercury",diameter:4879,distance:.39,
+    year:88,moons:"0",type:"Terrestrial",temp:"167°C",
+    color:"radial-gradient(circle at 30% 25%,#d5c8b6,#746a65)",
+    description:"Mercury is the smallest planet and closest to the Sun.",
+    fact:"A solar day on Mercury lasts about 176 Earth days."
+  },
+  {
+    name:"Venus",diameter:12104,distance:.72,
+    year:225,moons:"0",type:"Terrestrial",temp:"464°C",
+    color:"radial-gradient(circle at 30% 25%,#ffeda9,#b8783b)",
+    description:"Venus has a dense atmosphere and is the hottest planet.",
+    fact:"Venus rotates opposite to most planets."
+  },
+  {
+    name:"Earth",diameter:12742,distance:1,
+    year:365.25,moons:"1",type:"Terrestrial",temp:"15°C",
+    color:"radial-gradient(circle at 30% 25%,#73dcff,#1465bd 55%,#1e6149)",
+    description:"Earth is our home and the only planet currently known to support life.",
+    fact:"About 71% of Earth's surface is covered by water."
+  },
+  {
+    name:"Mars",diameter:6779,distance:1.52,
+    year:687,moons:"2",type:"Terrestrial",temp:"-65°C",
+    color:"radial-gradient(circle at 30% 25%,#ffb88c,#ad3e25)",
+    description:"Mars is the Red Planet, named for its iron-rich surface.",
+    fact:"Olympus Mons on Mars is a giant volcano."
+  },
+  {
+    name:"Jupiter",diameter:139820,distance:5.2,
+    year:4333,moons:"95+",type:"Gas Giant",temp:"-110°C",
+    color:"repeating-linear-gradient(175deg,#d7b88d 0 5px,#a87558 5px 9px,#f0debd 9px 14px)",
+    description:"Jupiter is the largest planet and is famous for enormous storms.",
+    fact:"The Great Red Spot is a long-lasting giant storm."
+  },
+  {
+    name:"Saturn",diameter:116460,distance:9.58,
+    year:10759,moons:"140+",type:"Gas Giant",temp:"-140°C",
+    color:"linear-gradient(145deg,#f4dfa2,#b89562)",
+    description:"Saturn has beautiful rings made mainly of ice and rocky material.",
+    fact:"Saturn's average density is lower than water."
+  },
+  {
+    name:"Uranus",diameter:50724,distance:19.2,
+    year:30687,moons:"28",type:"Ice Giant",temp:"-195°C",
+    color:"radial-gradient(circle at 30% 25%,#baffff,#58aebd)",
+    description:"Uranus is a blue-green ice giant with an unusual tilt.",
+    fact:"Uranus rotates almost on its side."
+  },
+  {
+    name:"Neptune",diameter:49244,distance:30.1,
+    year:60190,moons:"16",type:"Ice Giant",temp:"-200°C",
+    color:"radial-gradient(circle at 30% 25%,#639eff,#183bba)",
+    description:"Neptune is the farthest planet and has extremely fast winds.",
+    fact:"Neptune takes about 165 Earth years to orbit the Sun."
+  }
+];
+
+const questionBank = [
+  {q:"Which planet is the largest?",o:["Earth","Jupiter","Saturn","Neptune"],a:1},
+  {q:"Which planet is known as the Red Planet?",o:["Venus","Mercury","Mars","Uranus"],a:2},
+  {q:"Which planet is the hottest?",o:["Mercury","Venus","Earth","Mars"],a:1},
+  {q:"Which planet is famous for its rings?",o:["Earth","Mars","Saturn","Mercury"],a:2},
+  {q:"Which planet is closest to the Sun?",o:["Venus","Earth","Mercury","Mars"],a:2},
+  {q:"Which planet is farthest from the Sun?",o:["Jupiter","Uranus","Neptune","Saturn"],a:2},
+  {q:"Which planet is our home?",o:["Mars","Earth","Venus","Mercury"],a:1},
+  {q:"Which planet rotates almost on its side?",o:["Uranus","Earth","Jupiter","Venus"],a:0},
+  {q:"Which planet has the Great Red Spot?",o:["Saturn","Neptune","Jupiter","Mars"],a:2},
+  {q:"Which planet is the smallest?",o:["Mars","Mercury","Venus","Earth"],a:1},
+  {q:"Which planet has a very hot surface and thick carbon dioxide atmosphere?",o:["Venus","Neptune","Mercury","Uranus"],a:0},
+  {q:"Which planet takes about 165 Earth years to orbit the Sun?",o:["Saturn","Jupiter","Neptune","Mars"],a:2}
+];
+
+/* 2. APPLICATION STATE AND LOCAL STORAGE */
+const STORAGE_KEY = "solarExplorerV3";
+let selectedPlanet = "";
+let visited = new Set();
+let playing = true;
+let speed = 1;
+let questions = [];
+let questionIndex = 0;
+let score = 0;
+let answered = false;
+
+function readState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return {theme:"dark",visited:[]};
+
+    const data = JSON.parse(raw);
+    if(!data || typeof data !== "object")
+      return {theme:"dark",visited:[]};
+
+    return {
+      theme:data.theme==="light"?"light":"dark",
+      visited:Array.isArray(data.visited)
+        ? data.visited.filter(name=>planets.some(p=>p.name===name))
+        : []
+    };
+  }catch(error){
+    console.warn("Could not load saved progress:",error);
+    return {theme:"dark",visited:[]};
+  }
+}
+
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({
+      theme:document.body.classList.contains("light")
+        ?"light":"dark",
+      visited:[...visited]
+    }));
+    return true;
+  }catch(error){
+    console.warn("Could not save progress:",error);
+    return false;
+  }
+}
+
+const savedState = readState();
+visited = new Set(savedState.visited);
+
+/* 3. THEME */
+function updateTheme(){
+  const light = document.body.classList.contains("light");
+  $("themeButton").textContent = light?"🌙 Dark":"☀️ Light";
+  $("themeButton").setAttribute("aria-pressed",String(light));
+}
+
+if(savedState.theme==="light")
+  document.body.classList.add("light");
+
+updateTheme();
+
+$("themeButton").addEventListener("click",()=>{
+  document.body.classList.toggle("light");
+  updateTheme();
+  saveState();
+});
+
+/* 4. CREATE SOLAR SYSTEM */
+function createSolarSystem(){
+  const system = $("solarSystem");
+
+  // Generate decorative stars without external images.
+  for(let i=0;i<100;i++){
+    const star = document.createElement("span");
+    star.className = "star";
+    star.setAttribute("aria-hidden","true");
+    star.style.setProperty("--x",((i*73+17)%97+1)+"%");
+    star.style.setProperty("--y",((i*41+29)%97+1)+"%");
+    star.style.setProperty("--size",(i%5===0?3:2)+"px");
+    star.style.setProperty("--time",(1.5+i%5)+"s");
+    star.style.setProperty("--delay",(-i*.13)+"s");
+    system.append(star);
+  }
+
+  planets.forEach((p,i)=>{
+    const orbit = document.createElement("div");
+    orbit.className = "orbit";
+    orbit.style.setProperty("--diameter",(17+i*10.7)+"%");
+
+    const spinner = document.createElement("div");
+    spinner.className = "spinner";
+    spinner.dataset.duration = String(9+i*9);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "planet";
+    button.dataset.planet = p.name;
+    button.title = p.name;
+    button.setAttribute("aria-label","Explore "+p.name);
+    button.style.setProperty("--planet-size",
+      [9,12,13,10,24,21,17,17][i]+"px");
+    button.style.setProperty("--planet-color",p.color);
+
+    if(p.name==="Saturn") button.classList.add("saturn");
+
+    button.addEventListener("click",()=>selectPlanet(p.name));
+    spinner.append(button);
+    orbit.append(spinner);
+    system.append(orbit);
+  });
+}
+
+/* 5. ANIMATION CONTROLS */
+function updateSpeed(){
+  speed = Number($("speedSlider").value);
+  if(!Number.isFinite(speed)||speed<=0){
+    speed=1;
+    $("speedSlider").value="1";
+  }
+
+  $("speedLabel").textContent = speed+"×";
+
+  document.querySelectorAll(".spinner").forEach(spinner=>{
+    const base = Number(spinner.dataset.duration);
+    spinner.style.setProperty("--duration",(base/speed)+"s");
+  });
+}
+
+function updatePlayButton(){
+  $("solarSystem").classList.toggle("paused",!playing);
+  $("playPause").textContent = playing?"⏸ Pause":"▶ Play";
+  $("playPause").setAttribute("aria-pressed",String(!playing));
+}
+
+$("speedSlider").addEventListener("input",()=>{
+  updateSpeed();
+  $("animationStatus").textContent =
+    "Orbital speed set to "+speed+"×.";
+});
+
+$("playPause").addEventListener("click",()=>{
+  playing=!playing;
+  updatePlayButton();
+  $("animationStatus").textContent =
+    playing?"Animation resumed.":"Animation paused.";
+});
+
+$("resetOrbits").addEventListener("click",()=>{
+  document.querySelectorAll(".spinner").forEach(spinner=>{
+    spinner.style.animation="none";
+    void spinner.offsetWidth;
+    spinner.style.animation="";
+  });
+
+  playing=true;
+  $("speedSlider").value="1";
+  updateSpeed();
+  updatePlayButton();
+  $("animationStatus").textContent =
+    "Orbits restarted at normal speed.";
+});
+
+/* 6. PLANET SELECTION AND FACTS */
+function selectPlanet(name,options={}){
+  const p = planets.find(item=>item.name===name);
+  if(!p) return;
+
+  selectedPlanet=name;
+
+  if(options.markVisited!==false){
+    visited.add(name);
+    saveState();
+  }
+
+  updateLearningProgress();
+
+  $("planetTitle").textContent="🪐 "+p.name;
+  $("planetDescription").textContent=p.description;
+  $("planetFunFact").textContent="✨ "+p.fact;
+
+  const facts=[
+    ["📏 Diameter",p.diameter.toLocaleString("en-IN")+" km"],
+    ["☀️ Distance",p.distance+" AU"],
+    ["🗓️ Orbit",p.year.toLocaleString("en-IN")+" days"],
+    ["🌙 Moons",p.moons],
+    ["🔬 Type",p.type],
+    ["🌡️ Temperature",p.temp]
+  ];
+
+  const container=$("planetFacts");
+  container.replaceChildren();
+
+  facts.forEach(([label,value])=>{
+    const box=document.createElement("div");
+    box.className="fact";
+
+    const heading=document.createElement("span");
+    heading.className="fact-label";
+    heading.textContent=label;
+
+    const detail=document.createElement("span");
+    detail.className="fact-value";
+    detail.textContent=value;
+
+    box.append(heading,detail);
+    container.append(box);
+  });
+
+  document.querySelectorAll(".planet").forEach(button=>{
+    const active=button.dataset.planet===name;
+    button.classList.toggle("selected",active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+
+  renderPlanetButtons();
+
+  const panel=$("infoPanel");
+  panel.classList.remove("animate");
+  void panel.offsetWidth;
+  panel.classList.add("animate");
+}
+
+/* 7. SEARCH AND FILTER */
+function renderPlanetButtons(){
+  const search=$("planetSearch").value.trim().toLowerCase();
+  const filter=$("planetFilter").value;
+
+  const matches=planets.filter(p=>
+    p.name.toLowerCase().includes(search)&&
+    (filter==="all"||p.type===filter)
+  );
+
+  const container=$("planetButtons");
+  container.replaceChildren();
+
+  matches.forEach(p=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="planet-choice";
+    button.textContent=p.name;
+
+    if(p.name===selectedPlanet) button.classList.add("active");
+    if(visited.has(p.name)) button.classList.add("visited");
+
+    button.setAttribute("aria-pressed",
+      String(p.name===selectedPlanet));
+
+    button.addEventListener("click",()=>selectPlanet(p.name));
+    container.append(button);
+  });
+
+  $("searchMessage").textContent=matches.length===0
+    ?"No planets found. Try a different name or category."
+    :matches.length+" planet"+
+      (matches.length===1?"":"s")+" available.";
+}
+
+$("planetSearch").addEventListener("input",renderPlanetButtons);
+$("planetFilter").addEventListener("change",renderPlanetButtons);
+
+/* 8. LEARNING PROGRESS */
+function updateLearningProgress(){
+  const count=visited.size;
+  const percent=Math.round(count/planets.length*100);
+
+  $("learningText").textContent=
+    count+" of "+planets.length+
+    " planets explored ("+percent+"%).";
+
+  $("learningFill").style.width=percent+"%";
+  $("learningProgress").setAttribute(
+    "aria-valuenow",String(count));
+}
+
+$("resetProgress").addEventListener("click",()=>{
+  if(!confirm(
+    "Reset learning progress? Your theme preference will be kept."
+  )){
+    $("progressStatus").textContent="Reset cancelled.";
+    return;
+  }
+
+  visited.clear();
+  const saved=saveState();
+  updateLearningProgress();
+  renderPlanetButtons();
+
+  $("progressStatus").textContent=saved
+    ?"Learning progress reset. Theme preference preserved."
+    :"Progress reset for this session, but saving was unavailable.";
+});
+
+/* 9. PLANET COMPARISON */
+function setupComparison(){
+  ["compareA","compareB"].forEach(id=>{
+    planets.forEach(p=>{
+      const option=document.createElement("option");
+      option.value=p.name;
+      option.textContent=p.name;
+      $(id).append(option);
+    });
+
+    $(id).addEventListener("change",renderComparison);
+  });
+
+  $("compareA").value="Earth";
+  $("compareB").value="Jupiter";
+  renderComparison();
+}
+
+function createMetric(label,value,max,unit){
+  const wrapper=document.createElement("div");
+
+  const text=document.createElement("div");
+  text.className="metric-label";
+  text.textContent=
+    label+": "+value.toLocaleString("en-IN")+" "+unit;
+
+  const track=document.createElement("div");
+  track.className="bar-track";
+
+  const bar=document.createElement("div");
+  bar.className="bar-fill";
+  bar.style.width=(max>0?value/max*100:0)+"%";
+
+  track.append(bar);
+  wrapper.append(text,track);
+  return wrapper;
+}
+
+function renderComparison(){
+  const a=planets.find(p=>p.name===$("compareA").value);
+  const b=planets.find(p=>p.name===$("compareB").value);
+  if(!a||!b) return;
+
+  const maxDiameter=Math.max(a.diameter,b.diameter);
+  const maxDistance=Math.max(a.distance,b.distance);
+
+  const container=$("comparisonResult");
+  container.replaceChildren();
+
+  [a,b].forEach(p=>{
+    const box=document.createElement("div");
+    box.className="compare-box";
+
+    const title=document.createElement("h3");
+    title.textContent=p.name;
+
+    const diameter=createMetric(
+      "Diameter",p.diameter,maxDiameter,"km");
+    const distance=createMetric(
+      "Distance from Sun",p.distance,maxDistance,"AU");
+
+    const details=document.createElement("p");
+    details.textContent=
+      "Orbital Period: "+p.year.toLocaleString("en-IN")+
+      " days\nPlanet Type: "+p.type;
+    details.style.whiteSpace="pre-line";
+
+    box.append(title,diameter,distance,details);
+    container.append(box);
+  });
+
+  if(a.name===b.name){
+    $("comparisonSummary").textContent=
+      "Choose two different planets for a meaningful comparison.";
+    return;
+  }
+
+  const larger=a.diameter>=b.diameter?a:b;
+  const smaller=a.diameter>=b.diameter?b:a;
+
+  $("comparisonSummary").textContent=
+    larger.name+" is approximately "+
+    (larger.diameter/smaller.diameter).toFixed(1)+
+    " times wider than "+smaller.name+".";
+}
+
+/* 10. RANDOMIZED QUIZ */
+function shuffle(items){
+  const result=[...items];
+
+  for(let i=result.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [result[i],result[j]]=[result[j],result[i]];
+  }
+
+  return result;
+}
+
+function startQuiz(){
+  questions=shuffle(questionBank);
+  questionIndex=0;
+  score=0;
+  answered=false;
+
+  $("quizPlay").classList.remove("hidden");
+  $("quizResults").classList.add("hidden");
+  showQuestion();
+}
+
+function showQuestion(){
+  if(questionIndex>=questions.length){
+    showResults();
+    return;
+  }
+
+  answered=false;
+  const question=questions[questionIndex];
+
+  $("quizProgressText").textContent=
+    "Question "+(questionIndex+1)+" of "+questions.length;
+
+  $("quizProgress").setAttribute(
+    "aria-valuenow",String(questionIndex));
+
+  $("quizProgressFill").style.width=
+    (questionIndex/questions.length*100)+"%";
+
+  $("quizQuestion").textContent=question.q;
+  $("quizFeedback").textContent="";
+  $("quizScore").textContent="Score: "+score;
+  $("nextQuestion").disabled=true;
+  $("nextQuestion").textContent="Next Question";
+
+  const container=$("quizOptions");
+  container.replaceChildren();
+
+  question.o.forEach((option,index)=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="quiz-option";
+    button.textContent=option;
+    button.addEventListener("click",()=>answerQuestion(index));
+    container.append(button);
+  });
+}
+
+function answerQuestion(index){
+  if(answered) return;
+
+  const question=questions[questionIndex];
+  if(!question||index<0||index>=question.o.length) return;
+
+  answered=true;
+
+  if(index===question.a){
+    score++;
+    $("quizFeedback").textContent="✅ Correct answer!";
+  }else{
+    $("quizFeedback").textContent=
+      "❌ Correct answer: "+question.o[question.a];
+  }
+
+  document.querySelectorAll(".quiz-option").forEach(
+    (button,i)=>{
+      button.disabled=true;
+      if(i===question.a) button.classList.add("correct");
+      else if(i===index) button.classList.add("wrong");
+    }
+  );
+
+  $("quizScore").textContent="Score: "+score;
+
+  $("quizProgress").setAttribute(
+    "aria-valuenow",String(questionIndex+1));
+
+  $("quizProgressFill").style.width=
+    ((questionIndex+1)/questions.length*100)+"%";
+
+  $("nextQuestion").disabled=false;
+  $("nextQuestion").textContent=
+    questionIndex===questions.length-1
+      ?"See Results":"Next Question";
+}
+
+function showResults(){
+  const percentage=Math.round(score/questions.length*100);
+
+  $("quizPlay").classList.add("hidden");
+  $("quizResults").classList.remove("hidden");
+
+  $("finalPercentage").textContent=percentage+"%";
+  $("finalScore").textContent=
+    "Final Score: "+score+" / "+questions.length;
+
+  $("correctAnswerCount").textContent=
+    "Correct Answers: "+score+
+    " | Incorrect Answers: "+(questions.length-score);
+
+  let message;
+
+  if(percentage>=90){
+    message="🌟 Outstanding! You are a Solar System expert!";
+  }else if(percentage>=70){
+    message="🚀 Great job! You know the planets well!";
+  }else if(percentage>=50){
+    message="🌍 Good effort! Keep exploring and learning.";
+  }else{
+    message="🔭 Keep practicing! Review the planet facts and try again.";
+  }
+
+  $("performanceMessage").textContent=message;
+  $("playAgain").focus();
+}
+
+$("nextQuestion").addEventListener("click",()=>{
+  if(!answered) return;
+  questionIndex++;
+  showQuestion();
+});
+
+$("restartQuiz").addEventListener("click",startQuiz);
+$("playAgain").addEventListener("click",startQuiz);
+
+/* 11. INITIALIZE APPLICATION */
+function initializeApp(){
+  createSolarSystem();
+
+  // Show Earth by default, but do not mark it explored.
+  selectPlanet("Earth",{markVisited:false});
+
+  updateLearningProgress();
+  setupComparison();
+  startQuiz();
+  updateSpeed();
+  updatePlayButton();
+
+  $("animationStatus").textContent=
+    "Solar system animation ready.";
+}
+
+initializeApp();
+</script>
+</body>
+</html>

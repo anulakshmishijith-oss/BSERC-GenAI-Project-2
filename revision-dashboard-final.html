@@ -1,0 +1,1018 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101729">
+<title>StudyFlow | Student Revision Dashboard</title>
+<style>
+:root {
+  color-scheme:dark;
+  --bg:#0b1020;
+  --panel:#151d32;
+  --panel2:#1d2941;
+  --text:#f2f5ff;
+  --muted:#b1bdd5;
+  --primary:#8272ee;
+  --primary-hover:#9b8df8;
+  --accent:#38d9bc;
+  --border:#33405b;
+  --focus:#ffd66b;
+  --shadow:0 12px 30px rgba(0,0,0,.16);
+}
+body.light {
+  color-scheme:light;
+  --bg:#f2f5fc;
+  --panel:#fff;
+  --panel2:#e9edf8;
+  --text:#19243b;
+  --muted:#52617b;
+  --primary:#5b4ac8;
+  --primary-hover:#4938b3;
+  --accent:#087d6e;
+  --border:#cbd4e5;
+  --shadow:0 8px 25px rgba(30,45,90,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:16px/1.55 system-ui,-apple-system,
+       "Segoe UI",Arial,sans-serif;
+  transition:background .25s,color .25s;
+}
+button,input{font:inherit}
+button{
+  background:var(--primary);
+  color:#fff;
+  border:1px solid transparent;
+  border-radius:11px;
+  padding:11px 16px;
+  min-height:44px;
+  font-weight:650;
+  cursor:pointer;
+  transition:transform .2s,background .2s;
+}
+button:hover:not(:disabled){
+  background:var(--primary-hover);
+  transform:translateY(-2px);
+}
+button:disabled{opacity:.55;cursor:not-allowed}
+button:focus-visible,input:focus-visible,
+.flashcard:focus-visible{
+  outline:3px solid var(--focus);
+  outline-offset:3px;
+}
+.secondary{background:#344561}
+.secondary:hover:not(:disabled){background:#455a7d}
+.danger{background:#ad3b58}
+.danger:hover:not(:disabled){background:#c64a69}
+header{
+  padding:28px 5%;
+  background:linear-gradient(120deg,#29225e,#123c54);
+  color:#fff;
+}
+.header-inner{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+h1{font-size:clamp(26px,4vw,38px);margin:0}
+header p{margin:5px 0;color:#d9e2f6}
+.container{
+  max-width:1250px;
+  margin:auto;
+  padding:28px 20px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:20px;
+}
+.card{
+  min-width:0;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  transition:border-color .2s,transform .2s;
+}
+.card:hover{border-color:var(--primary)}
+h2{font-size:20px;margin:0 0 15px}
+h3{font-size:18px}
+.muted{color:var(--muted)}
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:12px 0;
+}
+.full{grid-column:1/-1}
+.topic{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:1px solid var(--border);
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:9px;
+  cursor:pointer;
+}
+.topic:hover{background:var(--panel2)}
+.topic input{
+  width:20px;
+  height:20px;
+  flex-shrink:0;
+  accent-color:var(--primary);
+}
+.progress{
+  height:14px;
+  background:var(--border);
+  border-radius:20px;
+  overflow:hidden;
+}
+.bar{
+  width:0;
+  height:100%;
+  background:linear-gradient(90deg,#8272ee,#38d9bc);
+  transition:width .4s ease;
+}
+.timer{
+  text-align:center;
+  font-size:clamp(44px,7vw,68px);
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:2px;
+  margin:18px 0;
+}
+.flashcard{
+  min-height:175px;
+  padding:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  border-radius:15px;
+  background:linear-gradient(135deg,#38327c,#17526c);
+  color:#fff;
+  font-size:20px;
+  font-weight:650;
+  cursor:pointer;
+  overflow-wrap:anywhere;
+  transition:transform .2s;
+}
+.flashcard:hover{transform:scale(1.015)}
+.option{
+  display:block;
+  width:100%;
+  text-align:left;
+  margin:8px 0;
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.option:hover:not(:disabled){
+  background:var(--primary);
+  color:white;
+}
+.option.correct{
+  background:#146b54!important;
+  color:#fff!important;
+}
+.option.wrong{
+  background:#a3344f!important;
+  color:#fff!important;
+}
+.stat{
+  color:var(--accent);
+  font-size:30px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+input[type=number]{
+  width:100px;
+  max-width:100%;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--panel2);
+  color:var(--text);
+}
+.goal-controls{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.toast{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:100;
+  background:#126d60;
+  color:white;
+  padding:15px 20px;
+  border-radius:12px;
+  max-width:350px;
+  box-shadow:0 10px 30px #0004;
+}
+.toast[hidden]{display:none}
+footer{
+  text-align:center;
+  color:var(--muted);
+  padding:25px;
+}
+@media(max-width:700px){
+  .grid{grid-template-columns:1fr}
+  .card{padding:18px}
+  .container{padding:18px 12px}
+  header{padding:22px 18px}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .toast{left:12px;right:12px;max-width:none}
+}
+@media(max-width:360px){
+  .stat-grid{grid-template-columns:1fr}
+  .actions button{flex:1}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="header-inner">
+  <div>
+    <h1>📚 StudyFlow</h1>
+    <p>Your interactive student revision dashboard</p>
+  </div>
+  <button id="themeButton" type="button">
+    ☀️ Light Mode
+  </button>
+</div>
+</header>
+
+<main class="container">
+<div class="grid">
+
+<section class="card" aria-labelledby="topicsTitle">
+  <h2 id="topicsTitle">📋 Study Checklist</h2>
+  <div id="topics"></div>
+  <p id="topicCount" class="muted"></p>
+  <div class="progress" id="progressTrack"
+       role="progressbar"
+       aria-label="Topics completed"
+       aria-valuemin="0" aria-valuemax="100"
+       aria-valuenow="0">
+    <div id="progressBar" class="bar"></div>
+  </div>
+  <p><strong id="progressText">0%</strong> completed</p>
+</section>
+
+<section class="card" aria-labelledby="timerTitle">
+  <h2 id="timerTitle">⏱️ Focus Timer</h2>
+  <p class="muted">Choose your study session.</p>
+  <div class="actions">
+    <button type="button" class="secondary"
+      data-minutes="15">15 min</button>
+    <button type="button" class="secondary"
+      data-minutes="25">25 min</button>
+    <button type="button" class="secondary"
+      data-minutes="45">45 min</button>
+  </div>
+  <div id="timer" class="timer"
+       role="timer" aria-label="Time remaining">
+    25:00
+  </div>
+  <div class="actions">
+    <button id="startTimer" type="button">Start</button>
+    <button id="pauseTimer" type="button"
+      class="secondary">Pause</button>
+    <button id="resetTimer" type="button"
+      class="danger">Reset</button>
+  </div>
+  <p id="timerStatus" class="muted" role="status">
+    Ready to focus
+  </p>
+</section>
+
+<section class="card" aria-labelledby="cardsTitle">
+  <h2 id="cardsTitle">🧠 Flashcards</h2>
+  <p class="muted">Click the card to reveal its answer.</p>
+  <div id="flashcard" class="flashcard"
+       role="button" tabindex="0"
+       aria-label="Flip flashcard"></div>
+  <p id="cardNumber" class="muted"></p>
+  <div class="actions">
+    <button id="previousCard" type="button"
+      class="secondary">Previous</button>
+    <button id="flipCard" type="button">Flip Card</button>
+    <button id="nextCard" type="button"
+      class="secondary">Next</button>
+  </div>
+</section>
+
+<section class="card" aria-labelledby="quizTitle">
+  <h2 id="quizTitle">🎯 Revision Quiz</h2>
+  <p id="questionNumber" class="muted"></p>
+  <h3 id="question"></h3>
+  <div id="options"></div>
+  <p id="quizFeedback" role="status"></p>
+  <div class="actions">
+    <button id="nextQuestion" type="button" disabled>
+      Next Question
+    </button>
+    <button id="restartQuiz" type="button"
+      class="secondary">Restart Quiz</button>
+  </div>
+</section>
+
+<section class="card" aria-labelledby="goalTitle">
+  <h2 id="goalTitle">🎯 Daily Study Goal</h2>
+  <p class="muted">
+    Track your focused study time for today.
+  </p>
+  <label for="goalInput">Target in minutes</label>
+  <div class="goal-controls">
+    <input id="goalInput" type="number"
+      min="1" max="1440" value="60">
+    <button id="saveGoal" type="button">Set Goal</button>
+  </div>
+  <p class="muted">Today's study time</p>
+  <div id="studiedMinutes" class="stat">0 min</div>
+  <p id="goalStatus" class="muted"></p>
+  <div class="progress" id="goalTrack"
+       role="progressbar"
+       aria-label="Daily study goal progress"
+       aria-valuemin="0" aria-valuemax="100"
+       aria-valuenow="0">
+    <div id="goalBar" class="bar"></div>
+  </div>
+</section>
+
+<section class="card" aria-labelledby="overviewTitle">
+  <h2 id="overviewTitle">📊 Progress Overview</h2>
+  <div class="stat-grid">
+    <div>
+      <p class="muted">Topics completed</p>
+      <div id="completedStat" class="stat">0/6</div>
+    </div>
+    <div>
+      <p class="muted">Latest quiz score</p>
+      <div id="quizStat" class="stat">Not attempted</div>
+    </div>
+  </div>
+  <p class="muted">
+    Progress is saved automatically in this browser.
+  </p>
+</section>
+
+<section class="card full">
+  <h2>⚙️ Dashboard Controls</h2>
+  <p class="muted">
+    Reset Dashboard clears saved study progress,
+    daily goals, quiz results and timer settings.
+  </p>
+  <button id="resetDashboard" type="button"
+    class="danger">Reset Dashboard</button>
+</section>
+
+</div>
+</main>
+
+<div id="toast" class="toast" role="status"
+     aria-live="polite" hidden></div>
+
+<footer>
+  StudyFlow • Learn smarter, one session at a time.
+</footer>
+
+<script>
+"use strict";
+
+const KEY="studyflow_final_v4";
+const $=id=>document.getElementById(id);
+
+const topics=[
+  "Business Process Management",
+  "Data Analytics Fundamentals",
+  "Python Programming",
+  "Statistics and Probability",
+  "Database Management",
+  "Communication Skills"
+];
+
+const cards=[
+  {
+    q:"What is Business Process Management?",
+    a:"A systematic approach to improving and managing business processes."
+  },
+  {
+    q:"What is a Python list?",
+    a:"An ordered, mutable collection of items."
+  },
+  {
+    q:"What is the mean in statistics?",
+    a:"The sum of values divided by their count."
+  },
+  {
+    q:"What is a database?",
+    a:"An organized collection of data."
+  },
+  {
+    q:"What does BPMN stand for?",
+    a:"Business Process Model and Notation."
+  }
+];
+
+const questions=[
+  {
+    q:"Which language is widely used in data analytics?",
+    options:["HTML","Python","CSS","XML"],
+    answer:1
+  },
+  {
+    q:"What does BPMN stand for?",
+    options:[
+      "Business Planning Model Network",
+      "Business Process Model and Notation",
+      "Basic Process Management Number",
+      "Business Program Monitoring Network"
+    ],
+    answer:1
+  },
+  {
+    q:"Which measure represents the arithmetic average?",
+    options:["Mode","Range","Mean","Median"],
+    answer:2
+  },
+  {
+    q:"Which SQL command retrieves records?",
+    options:["SELECT","DELETE","DROP","ALTER"],
+    answer:0
+  },
+  {
+    q:"Which is an example of non-verbal communication?",
+    options:["Email","Report","Eye contact","Phone call"],
+    answer:2
+  }
+];
+
+function today(){
+  const d=new Date();
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,"0"),
+    String(d.getDate()).padStart(2,"0")
+  ].join("-");
+}
+
+function defaults(){
+  return {
+    completed:[],
+    latestScore:null,
+    goal:60,
+    studiedSeconds:0,
+    studyDate:today(),
+    theme:"dark",
+    timerDuration:1500,
+    timerRemaining:1500
+  };
+}
+
+function validNumber(n,min,max){
+  return typeof n==="number" &&
+    Number.isFinite(n) && n>=min && n<=max;
+}
+
+function load(){
+  const base=defaults();
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(!raw) return base;
+    const saved=JSON.parse(raw);
+    if(!saved || typeof saved!=="object") return base;
+
+    if(Array.isArray(saved.completed)){
+      base.completed=[...new Set(
+        saved.completed.filter(i=>
+          Number.isInteger(i)&&i>=0&&i<topics.length
+        )
+      )];
+    }
+
+    if(validNumber(saved.goal,1,1440))
+      base.goal=Math.floor(saved.goal);
+
+    if(validNumber(saved.studiedSeconds,0,86400))
+      base.studiedSeconds=Math.floor(saved.studiedSeconds);
+
+    if(saved.studyDate===today())
+      base.studyDate=saved.studyDate;
+    else base.studiedSeconds=0;
+
+    if(saved.theme==="light") base.theme="light";
+
+    if(saved.latestScore &&
+       Number.isInteger(saved.latestScore.score) &&
+       validNumber(saved.latestScore.score,0,questions.length)){
+      base.latestScore={
+        score:saved.latestScore.score,
+        percent:Math.round(
+          saved.latestScore.score/questions.length*100
+        )
+      };
+    }
+
+    if([900,1500,2700].includes(saved.timerDuration)){
+      base.timerDuration=saved.timerDuration;
+      if(validNumber(
+        saved.timerRemaining,0,saved.timerDuration
+      )){
+        base.timerRemaining=Math.floor(
+          saved.timerRemaining
+        );
+      }else{
+        base.timerRemaining=base.timerDuration;
+      }
+    }
+  }catch(error){
+    console.warn("Could not load saved data",error);
+  }
+  return base;
+}
+
+let data=load();
+let storageWarningShown=false;
+
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(data));
+  }catch(error){
+    if(!storageWarningShown){
+      storageWarningShown=true;
+      notify("Browser storage unavailable. Progress may not persist.");
+    }
+  }
+}
+
+let toastTimeout;
+function notify(message){
+  const el=$("toast");
+  el.textContent=message;
+  el.hidden=false;
+  clearTimeout(toastTimeout);
+  toastTimeout=setTimeout(()=>el.hidden=true,4500);
+}
+
+/* THEME */
+
+function applyTheme(){
+  document.body.classList.toggle(
+    "light",data.theme==="light"
+  );
+  $("themeButton").textContent=
+    data.theme==="dark"?"☀️ Light Mode":"🌙 Dark Mode";
+  $("themeButton").setAttribute(
+    "aria-label",
+    data.theme==="dark"?"Switch to light mode":
+    "Switch to dark mode"
+  );
+}
+
+$("themeButton").addEventListener("click",()=>{
+  data.theme=data.theme==="dark"?"light":"dark";
+  applyTheme();
+  save();
+});
+
+/* CHECKLIST */
+
+function renderTopics(){
+  $("topics").replaceChildren();
+
+  topics.forEach((name,index)=>{
+    const label=document.createElement("label");
+    label.className="topic";
+
+    const input=document.createElement("input");
+    input.type="checkbox";
+    input.checked=data.completed.includes(index);
+
+    const span=document.createElement("span");
+    span.textContent=name;
+
+    input.addEventListener("change",()=>{
+      if(input.checked){
+        if(!data.completed.includes(index))
+          data.completed.push(index);
+      }else{
+        data.completed=data.completed.filter(
+          i=>i!==index
+        );
+      }
+      updateProgress();
+      save();
+    });
+
+    label.append(input,span);
+    $("topics").append(label);
+  });
+
+  updateProgress();
+}
+
+function updateProgress(){
+  const count=data.completed.length;
+  const percent=Math.round(
+    count/topics.length*100
+  );
+
+  $("topicCount").textContent=
+    count+" of "+topics.length+" topics completed";
+  $("progressText").textContent=percent+"%";
+  $("progressBar").style.width=percent+"%";
+  $("completedStat").textContent=
+    count+"/"+topics.length;
+  $("progressTrack").setAttribute(
+    "aria-valuenow",percent
+  );
+}
+
+/* DAILY GOAL */
+
+function syncDay(){
+  if(data.studyDate!==today()){
+    data.studyDate=today();
+    data.studiedSeconds=0;
+    save();
+  }
+}
+
+function updateGoal(){
+  syncDay();
+
+  const minutes=Math.floor(data.studiedSeconds/60);
+  const percent=Math.min(
+    100,
+    Math.round(data.studiedSeconds/(data.goal*60)*100)
+  );
+
+  $("studiedMinutes").textContent=minutes+" min";
+  $("goalStatus").textContent=
+    percent>=100
+      ?"🎉 Daily goal achieved!"
+      :percent+"% of "+data.goal+"-minute goal";
+  $("goalBar").style.width=percent+"%";
+  $("goalTrack").setAttribute(
+    "aria-valuenow",percent
+  );
+}
+
+$("saveGoal").addEventListener("click",()=>{
+  const input=$("goalInput");
+  const value=Number(input.value);
+
+  if(!Number.isInteger(value)||value<1||value>1440){
+    notify("Enter a goal between 1 and 1440 minutes.");
+    return;
+  }
+
+  data.goal=value;
+  save();
+  updateGoal();
+  notify("Daily goal saved!");
+});
+
+/* ACCURATE COUNTDOWN TIMER */
+
+let timerInterval=null;
+let deadline=0;
+let lastAccounted=0;
+
+function displayTimer(){
+  const m=Math.floor(data.timerRemaining/60);
+  const s=data.timerRemaining%60;
+
+  $("timer").textContent=
+    String(m).padStart(2,"0")+":"+
+    String(s).padStart(2,"0");
+}
+
+function accountElapsed(now){
+  if(!lastAccounted) return;
+
+  const elapsed=Math.max(
+    0,Math.floor((now-lastAccounted)/1000)
+  );
+  if(elapsed===0) return;
+
+  const seconds=Math.min(
+    elapsed,data.timerRemaining
+  );
+
+  syncDay();
+  data.studiedSeconds=Math.min(
+    86400,data.studiedSeconds+seconds
+  );
+  lastAccounted+=seconds*1000;
+  updateGoal();
+}
+
+function tick(){
+  const now=Date.now();
+
+  const remaining=Math.max(
+    0,Math.ceil((deadline-now)/1000)
+  );
+
+  accountElapsed(now);
+  data.timerRemaining=remaining;
+  displayTimer();
+  save();
+
+  if(remaining===0){
+    clearInterval(timerInterval);
+    timerInterval=null;
+    lastAccounted=0;
+    $("timerStatus").textContent=
+      "Session completed!";
+    notify("🎉 Focus session complete! Great work.");
+  }
+}
+
+function startTimer(){
+  if(timerInterval!==null) return;
+
+  if(data.timerRemaining<=0){
+    notify("Reset the timer to start a new session.");
+    return;
+  }
+
+  const now=Date.now();
+  deadline=now+data.timerRemaining*1000;
+  lastAccounted=now;
+
+  $("timerStatus").textContent=
+    "Focus session running";
+  timerInterval=setInterval(tick,250);
+}
+
+function pauseTimer(){
+  if(timerInterval===null) return;
+  tick();
+  if(timerInterval!==null){
+    clearInterval(timerInterval);
+    timerInterval=null;
+    lastAccounted=0;
+    $("timerStatus").textContent=
+      "Session paused";
+  }
+}
+
+function setTimer(minutes){
+  pauseTimer();
+  data.timerDuration=minutes*60;
+  data.timerRemaining=data.timerDuration;
+  displayTimer();
+  $("timerStatus").textContent=
+    minutes+"-minute session ready";
+  save();
+}
+
+function resetTimer(){
+  pauseTimer();
+  data.timerRemaining=data.timerDuration;
+  displayTimer();
+  $("timerStatus").textContent="Timer reset";
+  save();
+}
+
+document.querySelectorAll("[data-minutes]")
+  .forEach(button=>{
+    button.addEventListener("click",()=>{
+      setTimer(Number(button.dataset.minutes));
+    });
+  });
+
+$("startTimer").addEventListener("click",startTimer);
+$("pauseTimer").addEventListener("click",pauseTimer);
+$("resetTimer").addEventListener("click",resetTimer);
+
+/* FLASHCARDS */
+
+let cardIndex=0;
+let flipped=false;
+
+function renderCard(){
+  const card=cards[cardIndex];
+  $("flashcard").textContent=
+    flipped?card.a:card.q;
+  $("cardNumber").textContent=
+    "Card "+(cardIndex+1)+" of "+cards.length+
+    (flipped?" • Answer":" • Question");
+  $("flashcard").setAttribute(
+    "aria-label",
+    flipped?"Answer shown. Flip card":
+    "Question shown. Flip card"
+  );
+}
+
+function flipCard(){
+  flipped=!flipped;
+  renderCard();
+}
+
+function moveCard(direction){
+  cardIndex=(cardIndex+direction+cards.length)%
+    cards.length;
+  flipped=false;
+  renderCard();
+}
+
+$("flashcard").addEventListener("click",flipCard);
+$("flashcard").addEventListener("keydown",event=>{
+  if(event.key==="Enter"||event.key===" "){
+    event.preventDefault();
+    flipCard();
+  }
+});
+$("flipCard").addEventListener("click",flipCard);
+$("previousCard").addEventListener("click",()=>moveCard(-1));
+$("nextCard").addEventListener("click",()=>moveCard(1));
+
+/* QUIZ */
+
+let quizIndex=0;
+let score=0;
+let answered=false;
+let quizFinished=false;
+
+function renderQuestion(){
+  if(quizIndex>=questions.length){
+    finishQuiz();
+    return;
+  }
+
+  answered=false;
+  const item=questions[quizIndex];
+
+  $("questionNumber").textContent=
+    "Question "+(quizIndex+1)+" of "+questions.length;
+  $("question").textContent=item.q;
+  $("quizFeedback").textContent="";
+  $("nextQuestion").disabled=true;
+  $("options").replaceChildren();
+
+  item.options.forEach((option,index)=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="option";
+    button.textContent=option;
+    button.addEventListener("click",()=>{
+      chooseAnswer(index);
+    });
+    $("options").append(button);
+  });
+}
+
+function chooseAnswer(index){
+  if(answered||quizFinished) return;
+  answered=true;
+
+  const item=questions[quizIndex];
+  if(index===item.answer) score++;
+
+  const buttons=$("options").querySelectorAll("button");
+  buttons.forEach((button,i)=>{
+    button.disabled=true;
+    if(i===item.answer)
+      button.classList.add("correct");
+    if(i===index && i!==item.answer)
+      button.classList.add("wrong");
+  });
+
+  $("quizFeedback").textContent=
+    index===item.answer
+      ?"✅ Correct! Well done."
+      :"❌ Incorrect. Correct answer: "+
+        item.options[item.answer];
+
+  $("nextQuestion").disabled=false;
+  $("nextQuestion").textContent=
+    quizIndex===questions.length-1
+      ?"Finish Quiz":"Next Question";
+}
+
+function nextQuestion(){
+  if(!answered||quizFinished) return;
+  quizIndex++;
+  renderQuestion();
+}
+
+function finishQuiz(){
+  quizFinished=true;
+  const percent=Math.round(
+    score/questions.length*100
+  );
+
+  let feedback;
+  if(percent>=80) feedback="Excellent performance!";
+  else if(percent>=60)
+    feedback="Good work! Keep practicing.";
+  else feedback="Keep revising and try again!";
+
+  $("questionNumber").textContent="Quiz completed";
+  $("question").textContent=
+    "Your score: "+score+"/"+questions.length+
+    " ("+percent+"%)";
+  $("options").replaceChildren();
+  $("quizFeedback").textContent=feedback;
+  $("nextQuestion").disabled=true;
+
+  data.latestScore={score,percent};
+  updateQuizStat();
+  save();
+  notify("Quiz complete! You scored "+percent+"%.");
+}
+
+function updateQuizStat(){
+  $("quizStat").textContent=data.latestScore
+    ?data.latestScore.percent+"%"
+    :"Not attempted";
+}
+
+function restartQuiz(){
+  quizIndex=0;
+  score=0;
+  answered=false;
+  quizFinished=false;
+  $("nextQuestion").textContent="Next Question";
+  renderQuestion();
+}
+
+$("nextQuestion").addEventListener("click",nextQuestion);
+$("restartQuiz").addEventListener("click",restartQuiz);
+
+/* DASHBOARD RESET */
+
+$("resetDashboard").addEventListener("click",()=>{
+  if(!confirm(
+    "Clear all saved study progress and reset the dashboard?"
+  )) return;
+
+  pauseTimer();
+  data=defaults();
+  cardIndex=0;
+  flipped=false;
+
+  $("goalInput").value=data.goal;
+  applyTheme();
+  renderTopics();
+  displayTimer();
+  renderCard();
+  restartQuiz();
+  updateQuizStat();
+  updateGoal();
+
+  $("timerStatus").textContent="Ready to focus";
+  save();
+  notify("Dashboard reset successfully.");
+});
+
+/* INITIALIZATION */
+
+function init(){
+  $("goalInput").value=data.goal;
+  applyTheme();
+  renderTopics();
+  displayTimer();
+  renderCard();
+  renderQuestion();
+  updateQuizStat();
+  updateGoal();
+  save();
+}
+
+init();
+</script>
+</body>
+</html>

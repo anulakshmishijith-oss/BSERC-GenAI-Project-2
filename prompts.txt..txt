@@ -1,0 +1,187 @@
+
+BSERC INTERNSHIP – PROJECT 2
+THINKING IN HTML
+
+WEBSITE 1: STUDENT REVISION DASHBOARD
+
+PROMPT 1 – INITIAL WEBSITE CREATION
+Create a complete, modern, interactive Student Revision Dashboard website using HTML, CSS and JavaScript in one single HTML file. Include a study topic checklist, countdown timer, flashcards, scored multiple-choice quiz, progress tracker and reset button. Make every feature functional, use realistic sample study data, and make the design responsive for mobile and desktop. Do not use external libraries. Return one complete HTML file in a single code block.
+
+PROMPT 2 – ROUND 1 DESIGN IMPROVEMENT
+Make my Student Revision Dashboard more professional and attractive. Add a modern color theme, better buttons, smooth animations, improved fonts and a clean layout. Make sure the website works on mobile and desktop. Keep all existing features working. Return the complete updated HTML code in one code block.
+
+PROMPT 3 – ROUND 2
+[Paste the actual Round 2 prompt here after using it]
+
+PROMPT 4 – ROUND 3
+[Paste the actual Round 3 prompt here after using it]
+
+WEBSITE 2
+[Add all prompts used]
+
+WEBSITE 3
+[Add all prompts used]
+**PROMPT 3 – ROUND 2 FUNCTIONALITY IMPROVEMENT**
+
+Improve my existing Student Revision Dashboard HTML website by adding the following features:
+
+1. Automatically save study progress using localStorage so it remains after refreshing the page.
+2. Add a daily study goal tracker.
+3. Improve the quiz score display with percentage and feedback.
+4. Add a notification when the countdown timer finishes.
+5. Add a light/dark mode toggle.
+6. Make sure all existing features, including the checklist, timer, flashcards, quiz and reset button, continue working.
+
+Keep the modern design from Round 1. Make the website responsive for mobile and desktop. Use HTML, CSS and JavaScript in a single file without external libraries. Return the complete updated HTML code in one code block.
+**PROMPT 4 – ROUND 3: FINAL TESTING AND BUG FIXES**
+
+Review and improve my existing Student Revision Dashboard Version 3 HTML code.
+
+1. Fix any JavaScript errors and broken buttons.
+2. Ensure the checklist, timer, flashcards, quiz, progress tracker and reset button work correctly.
+3. Fix any issues with automatic progress saving using localStorage.
+4. Improve the mobile layout and responsiveness.
+5. Make the countdown timer more accurate.
+6. Improve loading speed, accessibility and user experience.
+7. Ensure light/dark mode and daily study goals work correctly.
+8. Preserve all existing features and the modern design.
+
+Use only HTML, CSS and JavaScript without external libraries. Return the complete final HTML code in one code block, ready to save and open in Chrome.
+## WEBSITE 2 – ROUND 1: DESIGN IMPROVEMENT
+
+**Prompt 2 – Design Improvement**
+
+Improve the design of my existing Personal Money Explorer HTML website.
+
+1. Create a modern financial dashboard with an attractive color scheme.
+2. Add smooth hover effects and animations.
+3. Improve the income, expenses and remaining balance cards.
+4. Make the expense chart more visually appealing.
+5. Improve the appearance of buttons, input fields and category filters.
+6. Add suitable icons and improve typography.
+7. Make the website fully responsive for mobile and desktop.
+8. Keep all existing features functional, including income calculation, expense tracking, savings goals, filtering, deleting expenses, light/dark mode, localStorage and reset.
+
+Use HTML, CSS and JavaScript in one single HTML file without external libraries.
+
+Return the complete updated HTML code in one code block.
+## WEBSITE 2 – ROUND 2: FUNCTIONALITY IMPROVEMENT
+
+**Prompt 3 – Functionality Improvement**
+
+Improve my existing Personal Money Explorer website from Round 1 by adding more useful and interactive features.
+
+1. Add an **Edit Expense** button so users can modify existing expense details.
+2. Add a **Search Expenses** feature to find expenses by name.
+3. Add a **Monthly Budget Limit** feature with a warning when spending exceeds the budget.
+4. Add a **Sort Expenses** option to sort by amount (highest or lowest).
+5. Add an **Export to CSV** button to download expense records.
+6. Add an **Undo Delete** feature to restore the most recently deleted expense.
+7. Add a **Clear All Expenses** button with confirmation.
+8. Improve form validation to prevent invalid or negative amounts.
+9. Keep all existing features functional, including income calculation, savings goals, expense chart, category filtering, light/dark mode, localStorage and reset.
+10. Make all new features responsive for mobile and desktop.
+
+Use only HTML, CSS and JavaScript in one standalone HTML file. Do not use external libraries.
+
+Return the complete updated HTML code in a single code block.
+**WEBSITE 2 – ROUND 3: FINAL TESTING AND BUG FIXES**
+
+Review and improve my existing Personal Money Explorer website from Round 2.
+
+1. Fix any JavaScript errors, broken buttons and calculation issues.
+2. Ensure income, expenses, remaining balance and savings goal calculations are accurate.
+3. Improve the monthly budget feature and its warning messages.
+4. Ensure editing, deleting, searching, sorting and filtering expenses work correctly together.
+5. Make Undo Delete work reliably after an expense is deleted.
+6. Ensure CSV export correctly handles expense names, amounts and categories.
+7. Improve input validation and display clear error messages.
+8. Ensure localStorage correctly saves and restores all important data after refreshing the page.
+9. Improve accessibility, keyboard navigation and mobile responsiveness.
+10. Add a helpful empty-state message when no expenses are available.
+11. Preserve the modern design, animations, theme switching and all existing interactive features.
+12. Make the website suitable for final internship submission.
+
+Use only HTML, CSS and JavaScript in a single standalone HTML file without external libraries.
+
+Return the complete corrected HTML code in one code block.
+## WEBSITE 3 – SOLAR SYSTEM EXPLORER
+
+### INITIAL GENERATION – PROMPT 1
+
+Create a complete, modern, interactive Solar System Explorer website using HTML, CSS and JavaScript in a single HTML file.
+
+Include an animated solar system, clickable planets, information cards with planet facts, orbit animation speed controls, pause/play functionality, a planet comparison feature, an interactive multiple-choice quiz, and light/dark mode.
+
+Make at least five different interactive features fully functional. Use a beautiful space-themed design and make the website responsive for mobile and desktop.
+
+Do not use external libraries. Return the complete HTML code in one code block.
+## WEBSITE 3 – ROUND 1: DESIGN AND VISUAL IMPROVEMENTS
+
+**Prompt 2 – Design Improvement**
+
+Improve my existing Solar System Explorer website by making its design more modern, realistic and visually attractive.
+
+1. Create a beautiful space-themed background with animated stars.
+2. Improve the appearance of the Sun and all eight planets using CSS gradients, shadows and realistic colors.
+3. Add smooth hover effects and glowing highlights when a planet is selected.
+4. Improve the solar system animation to make planetary movement smoother.
+5. Redesign the planet information cards with attractive icons, better typography and spacing.
+6. Add smooth transitions and animations when switching between planets.
+7. Improve the planet comparison section with visually appealing cards and comparison bars.
+8. Redesign the quiz section with modern answer buttons, progress indicators and score animations.
+9. Improve the header, navigation and overall layout to make the website look professional.
+10. Make the website fully responsive for mobile, tablet and desktop screens.
+11. Keep all existing interactive features functional, including planet selection, speed control, pause/play, restart, comparison, quiz and light/dark mode.
+12. Use only HTML, CSS and JavaScript in one standalone HTML file without external libraries.
+
+Return the complete updated HTML code in a single code block.
+## WEBSITE 3 – ROUND 2: FUNCTIONALITY IMPROVEMENTS
+
+**Prompt 3 – Functionality Improvement**
+
+Improve my existing Solar System Explorer V2 website by adding advanced interactive features and improving its functionality.
+
+1. Add a planet search bar that allows users to quickly find and select any of the eight planets.
+2. Add a planet filtering feature to display terrestrial planets, gas giants and ice giants separately.
+3. Add an interactive planet size comparison with visual bars showing relative diameters.
+4. Add a planet distance comparison feature showing the average distance of each planet from the Sun.
+5. Expand the Solar System Quiz to at least 10 multiple-choice questions.
+6. Randomize the quiz questions each time the quiz is restarted.
+7. Add a quiz results screen displaying the final score, percentage, correct answers and a performance message.
+8. Add a learning progress tracker showing how many planets the user has explored.
+9. Save the user's theme preference and learning progress using localStorage so they remain available after refreshing the page.
+10. Add a Reset Progress button with a confirmation message.
+11. Improve input validation, error handling and accessibility.
+12. Make sure the planet search, filters, animation controls, comparison features, quiz, progress tracker and theme switching work correctly.
+13. Keep the animated stars, glowing planets, modern information cards, navigation and responsive design from Round 1.
+14. Make the website fully responsive for mobile, tablet and desktop screens.
+15. Use only HTML, CSS and JavaScript in one standalone HTML file without external libraries.
+
+Return the complete updated HTML code in a single code block.
+## WEBSITE 3 – ROUND 3: FINAL TESTING, BUG FIXES AND OPTIMIZATION
+
+**Prompt 4 – Final Improvement**
+
+Improve and finalize my existing Solar System Explorer V3 website using HTML, CSS and JavaScript.
+
+1. Review the complete HTML, CSS and JavaScript code and fix any syntax errors, broken functions or logical bugs.
+2. Ensure all eight planets are displayed correctly and remain clickable during orbit animations.
+3. Fix any problems with orbit speed adjustment, pause/play and restart controls.
+4. Ensure the planet search bar and category filters work correctly, including when no matching planets are found.
+5. Verify that selecting a planet updates its information card and learning progress correctly.
+6. Ensure the planet size and distance comparison bars display accurate relative values.
+7. Fix any issues with the randomized 12-question quiz, answer validation, scoring, progress bar, final results and restart functionality.
+8. Ensure the learning progress tracker and light/dark mode preferences are saved and restored correctly using localStorage.
+9. Make sure the Reset Learning Progress button works correctly and does not accidentally delete other saved settings.
+10. Improve keyboard accessibility, button labels, focus indicators and screen-reader compatibility.
+11. Optimize animations and JavaScript for smooth performance on mobile devices.
+12. Improve the layout for small mobile screens, tablets and desktop computers, preventing overlapping elements and horizontal scrolling.
+13. Add a helpful empty-state message for searches with no results and clear feedback for user actions.
+14. Preserve all existing features and the modern space-themed design from the previous versions.
+15. Do not use external libraries, frameworks, images or APIs.
+16. Keep everything in one complete, standalone HTML file.
+17. Add clear comments to important sections of the code to make it easier to understand and maintain.
+18. Provide a final testing checklist identifying what should be manually tested in a browser.
+
+Return the complete final HTML, CSS and JavaScript code in a single code block.
